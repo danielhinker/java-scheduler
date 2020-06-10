@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.DropdownButton?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="223.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Appointment">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <TextField id="appointmentField" layoutX="315.0" layoutY="55.0" />
+      <TextField id="customerField" layoutX="315.0" layoutY="95.0" />
+      <TextField id="userField" layoutX="315.0" layoutY="135.0" />
+      <TextField id="titleField" layoutX="315.0" layoutY="175.0" />
+      <TextField id="locationField" layoutX="315.0" layoutY="255.0" />
+      <TextField id="contactField" layoutX="315.0" layoutY="295.0" />
+      <Label layoutX="130.0" layoutY="55.0" text="Appointment ID">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="95.0" text="Customer ID">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="175.0" text="Title">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="255.0" text="Location">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="295.0" text="Contact">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="135.0" text="User ID">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="215.0" text="Description">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField id="descriptionField" layoutX="315.0" layoutY="215.0" />
+      <Button layoutX="186.0" layoutY="543.0" mnemonicParsing="false" text="Save" />
+      <Button layoutX="351.0" layoutY="543.0" mnemonicParsing="false" text="Close" />
+      <TextField id="typeField" layoutX="315.0" layoutY="335.0" />
+      <Label layoutX="130.0" layoutY="335.0" text="Type">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField id="urlField" layoutX="315.0" layoutY="375.0" />
+      <Label layoutX="130.0" layoutY="375.0" text="Url">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <DatePicker id="dateField" layoutX="315.0" layoutY="415.0" />
+      <Label layoutX="130.0" layoutY="415.0" text="Date">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="455.0" text="Start Time">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="130.0" layoutY="495.0" text="End Time">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <DropdownButton id="startHour" layoutX="315.0" layoutY="455.0">
+          <items>
+              <MenuItem text="Choice 1" />
+              <MenuItem text="Choice 2" />
+              <MenuItem text="Choice 3" />
+          </items>
+      </DropdownButton>
+      <DropdownButton id="startMinute" layoutX="375.0" layoutY="455.0">
+         <items>
+            <MenuItem text="Choice 1" />
+            <MenuItem text="Choice 2" />
+            <MenuItem text="Choice 3" />
+         </items>
+      </DropdownButton>
+      <DropdownButton id="startTime" layoutX="435.0" layoutY="455.0">
+         <items>
+            <MenuItem text="Choice 1" />
+            <MenuItem text="Choice 2" />
+            <MenuItem text="Choice 3" />
+         </items>
+      </DropdownButton>
+      <DropdownButton id="endHour" layoutX="315.0" layoutY="495.0">
+         <items>
+            <MenuItem text="Choice 1" />
+            <MenuItem text="Choice 2" />
+            <MenuItem text="Choice 3" />
+         </items>
+      </DropdownButton>
+      <DropdownButton id="endMinute" layoutX="375.0" layoutY="495.0">
+         <items>
+            <MenuItem text="Choice 1" />
+            <MenuItem text="Choice 2" />
+            <MenuItem text="Choice 3" />
+         </items>
+      </DropdownButton>
+      <DropdownButton id="endTime" layoutX="435.0" layoutY="495.0">
+         <items>
+            <MenuItem text="Choice 1" />
+            <MenuItem text="Choice 2" />
+            <MenuItem text="Choice 3" />
+         </items>
+      </DropdownButton>
+   </children>
+</AnchorPane>
