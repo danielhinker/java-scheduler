@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
    <children>
       <Text layoutX="236.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduler">
          <font>
@@ -17,7 +17,7 @@
       </Text>
       <TextField id="usernameField" layoutX="317.0" layoutY="133.0" />
       <TextField id="passwordField" layoutX="317.0" layoutY="202.0" />
-      <Button id="loginButton" layoutX="247.0" layoutY="278.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="107.0" text="Login" />
+      <Button id="loginButton" layoutX="247.0" layoutY="278.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="107.0" text="Login" onAction="#handleLogin"/>
       <Text id="usernameText" layoutX="138.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
          <font>
             <Font size="23.0" />
