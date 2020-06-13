@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppointmentTypesController">
+   <children>
+      <TableView layoutX="257.0" layoutY="92.0" prefHeight="200.0" prefWidth="289.0">
+        <columns>
+          <TableColumn prefWidth="154.0" text="Appointment Type" />
+          <TableColumn prefWidth="142.0" text="Count" />
+        </columns>
+      </TableView>
+      <Button layoutX="478.0" layoutY="328.0" mnemonicParsing="false" text="Close" fx:id="closeButton" onAction="#handleClose"/>
+      <Label layoutX="207.0" layoutY="35.0" text="Appointment Type">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ComboBox layoutX="57.0" layoutY="153.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>
