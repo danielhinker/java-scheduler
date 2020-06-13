@@ -1,39 +1,40 @@
 package sample;
 
-import javafx.fxml.Initializable;
-
-import java.net.URL;
 import java.sql.*;
-import java.util.ResourceBundle;
 
-public class Database implements Initializable {
+public class Database {
 
-    public static void main(String[] args) throws Exception {
 
+    private static Statement statement;
+
+//    public static void main(String[] args) throws Exception {
+//
+//    }
+
+    public Database() {}
+
+
+    public static Statement queryStatement()  {
+        return statement;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public static void initialize() {
 
-//        String url = "jdbc:derby:zoo;create=true";
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://3.227.166.251:3306/U077EG", "U077EG", "53688956054");
-             Statement stmt = conn.createStatement()) {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251:3306/U077EG", "U077EG", "53688956054");
+            statement = connection.createStatement();
+//            java.util.Date dt = new java.util.Date();
 
-//            stmt.executeUpdate("CREATE TABLE species ("
-//                    + "id INTEGER PRIMARY KEY, "
-//                    + "name VARCHAR(255), "
-//                    + "num_acres DECIMAL)");
+//            java.text.SimpleDateFormat sdf =
+//                    new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+//            String currentTime = sdf.format(dt);
+
 //            stmt.executeUpdate(
-//                    "CREATE TABLE animal ("
-//                            + "id INTEGER PRIMARY KEY, "
-//                            + "species_id integer, "
-//                            + "name VARCHAR(255), "
-//                            + "date_born TIMESTAMP)");
+//                    "INSERT INTO user (userName, password, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES ('test', 'test1', '1', currentTime, 'me', currentTime, 'me' )"
+//            );
 
 //            stmt.executeUpdate("INSERT INTO species VALUES (1, 'African Elephant', 7.5)");
 //            stmt.executeUpdate("INSERT INTO species VALUES (2, 'Zebra', 1.2)");
@@ -43,7 +44,7 @@ public class Database implements Initializable {
 //            stmt.executeUpdate("INSERT INTO animal VALUES (3, 1, 'Ester', '2002−09−09 10:36')");
 //            stmt.executeUpdate("INSERT INTO animal VALUES (4, 1, 'Eddie', '2010−06−08 01:24')");
 //            stmt.executeUpdate("INSERT INTO animal VALUES (5, 2, 'Zoe', '2005−11−12 03:44')");
-        } catch (SQLException throwables) {
+        } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
     }
