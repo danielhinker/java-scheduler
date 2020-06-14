@@ -22,7 +22,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
@@ -51,8 +50,8 @@ public class MenuController implements Initializable {
         this.docController = docController;
     }
 
-    private ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-    private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
     Customer customerClicked;
     int customerClickedIndex;
@@ -61,21 +60,32 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+
         Statement statement = Database.queryStatement();
         String query = "SELECT * FROM customer";
         try {
-            ArrayList<String[]> result = new ArrayList<String[]>();
+
+
             ResultSet results = statement.executeQuery(query);
-//        System.out.println(results.);
+
             int columnCount = results.getMetaData().getColumnCount();
             while (results.next()) {
+                Customer customer = new Customer();
                 String[] row = new String[columnCount];
-                for (int i = 0; i < columnCount; i++) {
-                    row[i] = results.getString(i + 1);
-                }
-                result.add(row);
+                customer.setCustomerId(results.getString(1));
+                customer.setCustomerName(results.getString(2));
+                customer.setAddressId(results.getString(3));
+                customer.setActive(results.getString(4));
+                customerList.add(customer);
+                //                for (int i = 0; i < columnCount; i++) {
+//                    row[i] = results.getString(i + 1);
+//                    System.out.println(results.getString(i + 1));
+//                }
+//                result.add(row);
+
             }
-//            System.out.println(result.get(0));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -86,7 +96,7 @@ public class MenuController implements Initializable {
 //        customerCreatedBy.setCellValueFactory(new PropertyValueFactory<>("stock"));
 //        customerLastUpdate.setCellValueFactory(new PropertyValueFactory<>("stock"));
 //        customerLastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        customerTable.setItems(allCustomers);
+        customerTable.setItems(customerList);
         customerTable.setOnMouseClicked((EventHandler<Event>) e -> {
             customerClicked = customerTable.getSelectionModel().getSelectedItem();
             customerClickedIndex = customerTable.getSelectionModel().getSelectedIndex();
@@ -97,7 +107,7 @@ public class MenuController implements Initializable {
         appointmentCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         appointmentUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         appointmentTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        appointmentTable.setItems(allAppointments);
+        appointmentTable.setItems(appointmentList);
         appointmentTable.setOnMouseClicked((EventHandler<Event>) e -> {
             appointmentClicked = appointmentTable.getSelectionModel().getSelectedItem();
             appointmentClickedIndex = appointmentTable.getSelectionModel().getSelectedIndex();
