@@ -11,8 +11,8 @@ public class Country {
 
     public Country() {}
 
-    public void setCountryId() { this.countryId = countryId; }
-    public void setCountry() { this.country = country; }
+    public void setCountryId(String countryId) { this.countryId = countryId; }
+    public void setCountry(String country) { this.country = country; }
 
     public String getCountryId() { return countryId; }
     public String getCountry() { return country; }

@@ -42,9 +42,13 @@ public class MenuController implements Initializable {
     @FXML private TableColumn<Appointment, String> appointmentCustomerId;
     @FXML private TableColumn<Appointment, String> appointmentUserId;
     @FXML private TableColumn<Appointment, String> appointmentTitle;
-    @FXML private TableColumn<Appointment, String> appointmentCreatedBy;
-    @FXML private TableColumn<Appointment, String> appointmentLastUpdate;
-    @FXML private TableColumn<Appointment, String> appointmentLastUpdatedBy;
+    @FXML private TableColumn<Appointment, String> appointmentDescription;
+    @FXML private TableColumn<Appointment, String> appointmentLocation;
+    @FXML private TableColumn<Appointment, String> appointmentContact;
+    @FXML private TableColumn<Appointment, String> appointmentType;
+    @FXML private TableColumn<Appointment, String> appointmentStart;
+    @FXML private TableColumn<Appointment, String> appointmentEnd;
+
 
     void setDocController(LoginController docController) {
         this.docController = docController;
@@ -52,6 +56,8 @@ public class MenuController implements Initializable {
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+
+    public ObservableList<Customer> getCustomerList() { return customerList; }
 
     Customer customerClicked;
     int customerClickedIndex;
@@ -61,23 +67,23 @@ public class MenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
-
-        Statement statement = Database.queryStatement();
+        Statement statement = Database.getStatement();
         String query = "SELECT * FROM customer";
         try {
-
-
             ResultSet results = statement.executeQuery(query);
 
             int columnCount = results.getMetaData().getColumnCount();
             while (results.next()) {
                 Customer customer = new Customer();
-                String[] row = new String[columnCount];
+//                String[] row = new String[columnCount];
                 customer.setCustomerId(results.getString(1));
                 customer.setCustomerName(results.getString(2));
                 customer.setAddressId(results.getString(3));
                 customer.setActive(results.getString(4));
+                customer.setCreateDate(results.getString(5));
+                customer.setCreatedBy(results.getString(6));
+                customer.setLastUpdate(results.getString(7));
+                customer.setLastUpdateBy(results.getString(8));
                 customerList.add(customer);
                 //                for (int i = 0; i < columnCount; i++) {
 //                    row[i] = results.getString(i + 1);
@@ -89,13 +95,43 @@ public class MenuController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+        query = "SELECT * FROM appointment";
+        try {
+            ResultSet results = statement.executeQuery(query);
+
+            while (results.next()) {
+                Appointment appointment = new Appointment();
+
+                appointment.setAppointmentId(results.getString(1));
+                appointment.setCustomerId(results.getString(2));
+                appointment.setUserId(results.getString(3));
+                appointment.setTitle(results.getString(4));
+                appointment.setDescription(results.getString(5));
+                appointment.setLocation(results.getString(6));
+                appointment.setContact(results.getString(7));
+                appointment.setType(results.getString(8));
+                appointment.setUrl(results.getString(9));
+                appointment.setStart(results.getString(10));
+                appointment.setEnd(results.getString(11));
+                appointment.setCreateDate(results.getString(12));
+                appointment.setCreatedBy(results.getString(13));
+                appointment.setLastUpdate(results.getString(14));
+                appointment.setLastUpdateBy(results.getString(15));
+                appointmentList.add(appointment);
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         customerAddressId.setCellValueFactory(new PropertyValueFactory<>("addressId"));
-        customerCreated.setCellValueFactory(new PropertyValueFactory<>("active"));
-//        customerCreatedBy.setCellValueFactory(new PropertyValueFactory<>("stock"));
-//        customerLastUpdate.setCellValueFactory(new PropertyValueFactory<>("stock"));
-//        customerLastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        customerCreated.setCellValueFactory(new PropertyValueFactory<>("createDate"));
+        customerCreatedBy.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+        customerLastUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+        customerLastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("lastUpdateBy"));
         customerTable.setItems(customerList);
         customerTable.setOnMouseClicked((EventHandler<Event>) e -> {
             customerClicked = customerTable.getSelectionModel().getSelectedItem();
@@ -107,6 +143,13 @@ public class MenuController implements Initializable {
         appointmentCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         appointmentUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         appointmentTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        appointmentDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        appointmentLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        appointmentContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        appointmentType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        appointmentStart.setCellValueFactory(new PropertyValueFactory<>("start"));
+        appointmentEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+
         appointmentTable.setItems(appointmentList);
         appointmentTable.setOnMouseClicked((EventHandler<Event>) e -> {
             appointmentClicked = appointmentTable.getSelectionModel().getSelectedItem();

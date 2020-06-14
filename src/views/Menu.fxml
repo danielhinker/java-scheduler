@@ -7,46 +7,48 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MenuController">
    <children>
-      <TableView layoutX="51.0" layoutY="70.0" prefHeight="200.0" prefWidth="647.0" fx:id="customerTable">
+      <TableView fx:id="customerTable" layoutX="51.0" layoutY="70.0" prefHeight="200.0" prefWidth="763.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Customer ID" fx:id="customerId"/>
-          <TableColumn prefWidth="75.0" text="Name" fx:id="customerName"/>
-            <TableColumn prefWidth="75.0" text="Address ID" fx:id="customerAddressId"/>
-            <TableColumn prefWidth="75.0" text="Created" fx:id="customerCreated"/>
-            <TableColumn prefWidth="75.0" text="Created By" fx:id="customerCreatedBy"/>
-            <TableColumn prefWidth="75.0" text="Last Update" fx:id="customerLastUpdate"/>
-            <TableColumn prefWidth="106.0" text="Last Updated By" fx:id="customerLastUpdatedBy"/>
+          <TableColumn fx:id="customerId" prefWidth="75.0" text="Customer ID" />
+          <TableColumn fx:id="customerName" prefWidth="105.0" text="Name" />
+            <TableColumn fx:id="customerAddressId" prefWidth="84.0" text="Address ID" />
+            <TableColumn fx:id="customerCreated" prefWidth="128.0" text="Date Created" />
+            <TableColumn fx:id="customerCreatedBy" prefWidth="126.0" text="Created By" />
+            <TableColumn fx:id="customerLastUpdate" prefWidth="118.0" text="Updated Last" />
+            <TableColumn fx:id="customerLastUpdatedBy" prefWidth="126.0" text="Updated Last By" />
         </columns>
       </TableView>
-      <TableView layoutX="51.0" layoutY="288.0" prefHeight="200.0" prefWidth="647.0" fx:id="appointmentTable">
+      <TableView fx:id="appointmentTable" layoutX="51.0" layoutY="288.0" prefHeight="200.0" prefWidth="763.0">
          <columns>
-            <TableColumn prefWidth="69.0" text="Appt ID" fx:id="appointmentId"/>
-            <TableColumn prefWidth="55.0" text="Cust ID" fx:id="appointmentCustomerId"/>
-            <TableColumn prefWidth="101.0" text="User ID" fx:id="appointmentUserId"/>
-            <TableColumn prefWidth="75.0" text="Title" fx:id="appointmentTitle"/>
-            <TableColumn prefWidth="75.0" text="Created By" fx:id="appointmentCreatedBy"/>
-            <TableColumn prefWidth="75.0" text="Last Update" fx:id="appointmentLastUpdate"/>
-            <TableColumn prefWidth="106.0" text="Last Updated By" fx:id="appointmentLastUpdatedBy"/>
+            <TableColumn fx:id="appointmentId" prefWidth="50.0" text="Appt ID" />
+            <TableColumn fx:id="appointmentCustomerId" prefWidth="51.0" text="Cust ID" />
+            <TableColumn fx:id="appointmentUserId" prefWidth="50.0" text="User ID" />
+            <TableColumn fx:id="appointmentTitle" prefWidth="36.0" text="Title" />
+            <TableColumn fx:id="appointmentDescription" prefWidth="112.0" text="Desc" />
+            <TableColumn fx:id="appointmentLocation" prefWidth="72.0" text="Location" />
+            <TableColumn fx:id="appointmentContact" prefWidth="72.0" text="Contact" />
+            <TableColumn fx:id="appointmentType" prefWidth="71.0" text="Type" />
+            <TableColumn fx:id="appointmentStart" prefWidth="120.0" text="Start" />
+            <TableColumn fx:id="appointmentEnd" minWidth="0.0" prefWidth="128.0" text="End" />
          </columns>
       </TableView>
-      <Button layoutX="727.0" layoutY="325.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" text="Add" fx:id="addAppointmentButton" onAction="#handleAddAppointment"/>
-      <Button layoutX="727.0" layoutY="375.0" mnemonicParsing="false" text="Update" fx:id="updateAppointmentButton" onAction="#handleUpdateAppointment"/>
-      <Button layoutX="727.0" layoutY="425.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" text="Delete" fx:id="deleteAppointmentButton" onAction="#handleDeleteAppointment"/>
-      <Button layoutX="52.0" layoutY="576.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" text="Appointment Type Report" fx:id="appointmentTypeButton" onAction="#handleAppointmentType"/>
-      <Button layoutX="52.0" layoutY="522.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" text="All Appointments" fx:id="allAppointmentsButton" onAction="#handleAllAppointments"/>
-      <Button layoutX="290.0" layoutY="522.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" text="Consultants Schedule" fx:id="consultantsSchedule" onAction="#handleConsultantsSchedule"/>
-      <Button layoutX="728.0" layoutY="563.0" mnemonicParsing="false" text="Log off" onAction="#handleLogOff"/>
-      <Button layoutX="727.0" layoutY="107.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" text="Add" fx:id="addCustomerButton" onAction="#handleAddCustomer"/>
-      <Button layoutX="727.0" layoutY="157.0" mnemonicParsing="false" text="Update" fx:id="updateCustomerButton" onAction="#handleUpdateCustomer"/>
-      <Button layoutX="727.0" layoutY="207.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" text="Delete" fx:id="deleteCustomerButton" onAction="#handleDeleteCustomer"/>
+      <Button fx:id="addAppointmentButton" layoutX="850.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleAddAppointment" prefHeight="27.0" prefWidth="59.0" text="Add" />
+      <Button fx:id="updateAppointmentButton" layoutX="850.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleUpdateAppointment" text="Update" />
+      <Button fx:id="deleteAppointmentButton" layoutX="850.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefHeight="27.0" prefWidth="59.0" text="Delete" />
+      <Button fx:id="appointmentTypeButton" layoutX="52.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleAppointmentType" prefHeight="30.0" prefWidth="170.0" text="Appointment Type Report" />
+      <Button fx:id="allAppointmentsButton" layoutX="52.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAllAppointments" prefHeight="30.0" prefWidth="170.0" text="All Appointments" />
+      <Button fx:id="consultantsSchedule" layoutX="290.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleConsultantsSchedule" prefHeight="30.0" prefWidth="170.0" text="Consultants Schedule" />
+      <Button fx:id="logoffButton" layoutX="851.0" layoutY="564.0" mnemonicParsing="false" onAction="#handleLogOff" text="Log off" />
+      <Button fx:id="addCustomerButton" layoutX="850.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="27.0" prefWidth="59.0" text="Add" />
+      <Button fx:id="updateCustomerButton" layoutX="850.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleUpdateCustomer" text="Update" />
+      <Button fx:id="deleteCustomerButton" layoutX="850.0" layoutY="208.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="27.0" prefWidth="59.0" text="Delete" />
       <Text layoutX="364.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main Menu">
          <font>
             <Font size="26.0" />
          </font>
       </Text>
-      <Button layoutX="290.0" layoutY="576.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" text="Customers Status" fx:id="customerStatusButton" onAction="#handleCustomerStatus"/>
+      <Button fx:id="customerStatusButton" layoutX="290.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleCustomerStatus" prefHeight="30.0" prefWidth="170.0" text="Customers Status" />
    </children>
 </AnchorPane>

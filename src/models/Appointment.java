@@ -12,9 +12,14 @@ public class Appointment {
     private String url;
     private String start;
     private String end;
+    private String createDate;
+    private String createdBy;
+    private String lastUpdate;
+    private String lastUpdateBy;
 
     public Appointment(String appointmentId, String customerId, String userId, String title, String description,
-                       String location, String contact, String type, String url, String start, String end) {
+                       String location, String contact, String type, String url, String start, String end,
+                       String createDate, String createdBy, String lastUpdate, String lastUpdateBy) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.userId = userId;
@@ -26,6 +31,10 @@ public class Appointment {
         this.url = url;
         this.start = start;
         this.end = end;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdateBy = lastUpdateBy;
     }
 
     public Appointment() {}
@@ -38,8 +47,13 @@ public class Appointment {
     public void setLocation(String location) { this.location = location; }
     public void setContact(String contact) { this.contact = contact; }
     public void setType(String type) { this.type = type; }
+    public void setUrl(String url) { this.url = url; }
     public void setStart(String start) { this.start = start; }
     public void setEnd(String end) { this.end = end; }
+    public void setCreateDate(String createDate) { this.createDate = createDate; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+    public void setLastUpdate(String lastUpdate) { this.lastUpdate = lastUpdate; }
+    public void setLastUpdateBy(String lastUpdateBy) { this.lastUpdateBy = lastUpdateBy; }
 
     public String getAppointmentId() { return appointmentId; }
     public String getCustomerId() { return customerId; }
@@ -49,8 +63,13 @@ public class Appointment {
     public String getLocation() { return location; }
     public String getContact() { return contact; }
     public String getType() { return type; }
+    public String getUrl() { return url; }
     public String getStart() { return start; }
     public String getEnd() { return end; }
+    public String getCreateDate() { return createDate; }
+    public String getCreatedBy() { return createdBy; }
+    public String getLastUpdate() { return lastUpdate; }
+    public String getLastUpdateBy() { return lastUpdateBy; }
 
     // INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end) VALUES (2, 1, 'title', 'desc', 'In person', 'me', 'type', 'url', '2020-06-14T14:25:10', '2020-06-14T16:25:10');
 }

@@ -37,7 +37,7 @@ public class LoginController implements Initializable {
 
 //        System.out.println(usernameField.getText());
 //        try {
-            Statement statement = Database.queryStatement();
+            Statement statement = Database.getStatement();
             System.out.println((statement));
             String query = "SELECT * FROM user WHERE userName='" + usernameField.getText() + "' AND password='" + passwordField.getText() + "'";
             ResultSet results = statement.executeQuery(query);

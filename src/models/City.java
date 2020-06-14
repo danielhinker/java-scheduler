@@ -17,9 +17,9 @@ public class City {
     public void setCity(String city) { this.city = city; }
     public void setCountryId(String countryId) { this.countryId = countryId; }
 
-    public void getCityId() { this.cityId = cityId; }
-    public void getCity() { this.city = city; }
-    public void getCountryId() { this.countryId = countryId; }
+    public String getCityId() { return cityId; }
+    public String getCity() { return city; }
+    public String getCountryId() { return countryId; }
 
 //    INSERT INTO city (city, countryId) VALUES ('LA', 1);
 
