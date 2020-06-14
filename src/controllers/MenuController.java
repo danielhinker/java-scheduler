@@ -17,11 +17,13 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import models.Appointment;
 import models.Customer;
+import models.User;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
@@ -49,9 +51,12 @@ public class MenuController implements Initializable {
     @FXML private TableColumn<Appointment, String> appointmentStart;
     @FXML private TableColumn<Appointment, String> appointmentEnd;
 
+    private User user;
+    public User getUser() { return user; }
 
     void setDocController(LoginController docController) {
         this.docController = docController;
+        this.user = docController.getUser();
     }
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -134,6 +139,8 @@ public class MenuController implements Initializable {
         customerLastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("lastUpdateBy"));
         customerTable.setItems(customerList);
         customerTable.setOnMouseClicked((EventHandler<Event>) e -> {
+            appointmentClicked = null;
+            appointmentClickedIndex = 0;
             customerClicked = customerTable.getSelectionModel().getSelectedItem();
             customerClickedIndex = customerTable.getSelectionModel().getSelectedIndex();
         });
@@ -152,6 +159,8 @@ public class MenuController implements Initializable {
 
         appointmentTable.setItems(appointmentList);
         appointmentTable.setOnMouseClicked((EventHandler<Event>) e -> {
+            customerClicked = null;
+            customerClickedIndex = 0;
             appointmentClicked = appointmentTable.getSelectionModel().getSelectedItem();
             appointmentClickedIndex = appointmentTable.getSelectionModel().getSelectedIndex();
         });
@@ -204,23 +213,49 @@ public class MenuController implements Initializable {
     }
 
     public void handleDeleteCustomer() {
+        if (customerClicked != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Warning!");
+            alert.setHeaderText("Are you sure you want to delete the selected customer?");
+            Optional<ButtonType> alertButton = alert.showAndWait();
+            if (alertButton.get() == ButtonType.OK) {
+                try {
+                    Statement statement = Database.getStatement();
+                    String searchQuery = "DELETE FROM customer WHERE (customerId = '" + customerClicked.getCustomerId() + "')";
+                    int result = statement.executeUpdate(searchQuery);
+                    customerList.remove(customerClicked);
+                } catch (SQLException e) {
+                }
 
+            }
+            customerClicked = null;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select a customer to delete.");
+            alert.show();
+        }
     }
 
     public void handleAddAppointment() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/AddAppointment.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            loader.<AddAppointmentController>getController().setDocController(this);
+        if (customerClicked != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/AddAppointment.fxml"));
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                loader.<AddAppointmentController>getController().setDocController(this);
 //            AddCustomerController controller = loader.getController();
 //            controller.partTable.getItems().setAll((inventory.getAllParts()));
-
-            stage.show();
-
-        } catch (Exception e) {
-            System.out.println((e));
+                stage.show();
+            } catch (Exception e) {
+                System.out.println((e));
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select a customer for the appointment.");
+            alert.show();
         }
     }
 
@@ -239,7 +274,28 @@ public class MenuController implements Initializable {
     }
 
     public void handleDeleteAppointment() {
+        if (appointmentClicked != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Warning!");
+            alert.setHeaderText("Are you sure you want to delete the selected appointment?");
+            Optional<ButtonType> alertButton = alert.showAndWait();
+            if (alertButton.get() == ButtonType.OK) {
+                try {
+                    Statement statement = Database.getStatement();
+                    String searchQuery = "DELETE FROM appointment WHERE (appointmentId = '" + appointmentClicked.getAppointmentId() + "')";
+                    int result = statement.executeUpdate(searchQuery);
+                    appointmentList.remove(appointmentClicked);
+                } catch (SQLException e) {
+                }
 
+            }
+            appointmentClicked = null;
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select an appointment to delete");
+            alert.show();
+        }
     }
 
     public void handleAppointmentType() {

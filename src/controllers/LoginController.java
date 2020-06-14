@@ -19,13 +19,12 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    private static User currentUser;
-
     @FXML private TextField usernameField;
     @FXML private TextField passwordField;
 
-    public static User getCurrentUser() {
-        return currentUser;
+    private User user;
+    public User getUser() {
+        return user;
     }
 
     @Override
@@ -35,13 +34,15 @@ public class LoginController implements Initializable {
 
     public void handleLogin(ActionEvent actionEvent) throws SQLException {
 
-//        System.out.println(usernameField.getText());
 //        try {
             Statement statement = Database.getStatement();
             System.out.println((statement));
             String query = "SELECT * FROM user WHERE userName='" + usernameField.getText() + "' AND password='" + passwordField.getText() + "'";
             ResultSet results = statement.executeQuery(query);
             if (results.next()) {
+                user = new User();
+                user.setUserId(results.getString(1));
+                user.setUsername(results.getString(2));
 //                currentUser = new User();
 //                currentUser.setUsername(results.getString("userName"));
 //                statement.close();

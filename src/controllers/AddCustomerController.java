@@ -11,7 +11,7 @@ import models.Address;
 import models.City;
 import models.Country;
 import models.Customer;
-
+import java.time.*;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
@@ -22,6 +22,21 @@ public class AddCustomerController implements Initializable {
 
     void setDocController(MenuController docController) {
         this.docController = docController;
+
+        Statement statement = Database.getStatement();
+        String query = "SELECT AUTO_INCREMENT\n" +
+                "FROM information_schema.TABLES\n" +
+                "WHERE TABLE_SCHEMA = \"U077EG\"\n" +
+                "AND TABLE_NAME = \"customer\";";
+        ResultSet result;
+        try {
+            result = statement.executeQuery(query);
+            result.next();
+            id.setText(result.getString(1));
+            id.setDisable(true);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     @FXML private Button cancelButton;
@@ -41,8 +56,6 @@ public class AddCustomerController implements Initializable {
 
     @FXML
     public void handleSave(ActionEvent event) {
-//        String key[] = {"countryId"};
-
         try {
 
             // Insert Country
