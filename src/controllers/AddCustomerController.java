@@ -11,10 +11,14 @@ import models.Address;
 import models.City;
 import models.Country;
 import models.Customer;
+
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.net.URL;
 import java.sql.*;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class AddCustomerController implements Initializable {
 
@@ -58,9 +62,19 @@ public class AddCustomerController implements Initializable {
     public void handleSave(ActionEvent event) {
         try {
 
+            // Get Current Time
+            final java.util.Date currentTime = new Date();
+            final SimpleDateFormat formattedDate =
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String currentDateTime = formattedDate.format(currentTime);
+
+            String userName = docController.getUser().getUsername();
+
             // Insert Country
             Statement statement = Database.getStatement();
-            String insertQuery = "INSERT IGNORE INTO country (country) VALUES ('" + country.getText() + "')";
+            String insertQuery = "INSERT IGNORE INTO country (country, createDate, createdBy) VALUES ('" + country.getText() + "', '"
+            + currentDateTime + "', '" + userName + "')";
             int insertResults = statement.executeUpdate(insertQuery);
 
             // Select Country
@@ -75,7 +89,9 @@ public class AddCustomerController implements Initializable {
             System.out.println(country.getCountry());
 
             // Insert City
-            insertQuery = "INSERT IGNORE INTO city (city, countryId) VALUES ('" + city.getText() + "', '" + country.getCountryId() + "')";
+            insertQuery = "INSERT IGNORE INTO city (city, countryId, createDate, createdBy) VALUES ('" +
+                    city.getText() + "', '" + country.getCountryId() + "', '"
+                    + currentDateTime + "', '" + userName + "')";
             insertResults = statement.executeUpdate(insertQuery);
 
             // Select City
@@ -89,9 +105,10 @@ public class AddCustomerController implements Initializable {
             city.setCity(result.getString(2));
 
             // Insert Address
-            insertQuery = "INSERT IGNORE INTO address (address, address2, cityId, postalCode, phone) VALUES ('"
+            insertQuery = "INSERT IGNORE INTO address (address, address2, cityId, postalCode, phone, createDate, createdBy) VALUES ('"
                     + address.getText() + "', '" + address2.getText() + "', '" + city.getCityId() + "', '"
-                    + postal.getText() + "', '" + phone.getText() + "')";
+                    + postal.getText() + "', '" + phone.getText() + "', '"
+                    + currentDateTime + "', '" + userName + "')";
             insertResults = statement.executeUpdate(insertQuery);
 
             // Select Address
@@ -108,7 +125,8 @@ public class AddCustomerController implements Initializable {
             address.setPostalCode(result.getString(5));
 
             // Insert Customer
-            insertQuery = "INSERT IGNORE INTO customer (customerName, addressId, active) VALUES ('" + name.getText() + "', '" + address.getAddressId() + "', '1')";
+            insertQuery = "INSERT IGNORE INTO customer (customerName, addressId, active, createDate, createdBy) VALUES ('"
+                    + name.getText() + "', '" + address.getAddressId() + "', '1', '" + currentDateTime + "', '" + userName + "' )";
             insertResults = statement.executeUpdate(insertQuery);
 
             // Select Customer

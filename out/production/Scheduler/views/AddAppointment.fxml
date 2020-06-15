@@ -72,7 +72,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <DatePicker id="dateField" layoutX="315.0" layoutY="415.0" fx:id="date"/>
+      <DatePicker id="dateField" fx:id="date" layoutX="315.0" layoutY="415.0" />
       <Label layoutX="130.0" layoutY="415.0" text="Date">
          <font>
             <Font size="18.0" />
@@ -88,7 +88,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <ComboBox id="start" fx:id="start" layoutX="315.0" layoutY="453.0" prefHeight="27.0" prefWidth="95.0" />
-      <ComboBox id="end" fx:id="end" layoutX="315.0" layoutY="493.0" prefHeight="27.0" prefWidth="95.0" />
+      <ComboBox id="start" fx:id="start" layoutX="315.0" layoutY="453.0" prefHeight="27.0" prefWidth="118.0" />
+      <ComboBox id="end" fx:id="end" layoutX="315.0" layoutY="493.0" prefHeight="27.0" prefWidth="118.0" />
    </children>
 </AnchorPane>

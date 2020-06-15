@@ -63,6 +63,7 @@ public class MenuController implements Initializable {
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
     public ObservableList<Customer> getCustomerList() { return customerList; }
+    public ObservableList<Appointment> getAppointmentList() { return appointmentList; }
 
     Customer customerClicked;
     int customerClickedIndex;
@@ -221,10 +222,27 @@ public class MenuController implements Initializable {
             if (alertButton.get() == ButtonType.OK) {
                 try {
                     Statement statement = Database.getStatement();
-                    String searchQuery = "DELETE FROM customer WHERE (customerId = '" + customerClicked.getCustomerId() + "')";
-                    int result = statement.executeUpdate(searchQuery);
+                    String appointmentSelectQuery = "SELECT * FROM appointment WHERE customerId = '" + customerClicked.getCustomerId() + "'";
+                    String appointmentDeleteQuery = "DELETE FROM appointment WHERE customerId = '" + customerClicked.getCustomerId() + "'";
+                    String customerQuery = "DELETE FROM customer WHERE customerId = '" + customerClicked.getCustomerId() + "'";
+
+                    ResultSet selectResult = statement.executeQuery(appointmentSelectQuery);
+                    ObservableList<String> appointmentsToDelete = FXCollections.observableArrayList();
+                    while (selectResult.next()) {
+                        appointmentsToDelete.add(selectResult.getString(1));
+                    }
+
+                    for (int i = 0; i < appointmentsToDelete.size(); i++) {
+                        appointmentList.remove(appointmentsToDelete.get(i));
+                    }
+                    int appointmentResult = statement.executeUpdate(appointmentDeleteQuery);
+                    int customerResult = statement.executeUpdate(customerQuery);
+
                     customerList.remove(customerClicked);
+//                    appointmentList.remove(app)
+
                 } catch (SQLException e) {
+                    System.out.println(e);
                 }
 
             }
@@ -260,6 +278,7 @@ public class MenuController implements Initializable {
     }
 
     public void handleUpdateAppointment() {
+        if (appointmentClicked != null) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ModifyAppointment.fxml"));
             Parent root = loader.load();
@@ -270,6 +289,12 @@ public class MenuController implements Initializable {
 
         } catch (Exception e) {
             System.out.println((e));
+        }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select an appointment to update.");
+            alert.show();
         }
     }
 

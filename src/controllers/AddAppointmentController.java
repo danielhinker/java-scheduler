@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.*;
 
 import javafx.event.ActionEvent;
+import models.Appointment;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -78,80 +79,94 @@ public class AddAppointmentController implements Initializable {
         stage.close();
     }
 
+    public void checkAppointment(String dateTime) {
+        try {
+            ObservableList<Appointment> appointmentTimesList = FXCollections.observableArrayList();
+
+            Statement statement = Database.getStatement();
+            String insertQuery = "SELECT * from appointment";
+            ResultSet selectResult = statement.executeQuery(insertQuery);
+            while (selectResult.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setStart(selectResult.getString(10));
+                appointment.setEnd(selectResult.getString(11));
+                appointmentTimesList.add(appointment);
+            }
+
+//            String startTime = selectResult.getString(10);
+//            String endTime = selectResult.getString(11);
+
+        } catch (SQLException e) {
+
+        }
+    }
+
     public void handleSave(ActionEvent event) throws ParseException {
-//        try {
+        try {
 
             LocalDate dateOnly = date.getValue();
-
             String startTimeSelected = startTimesList.get(start.getSelectionModel().getSelectedIndex());
-//            String timeOnly = startTimeSelected.substring(0, startTimeSelected.length() - 2);
-//            String dateTime = dateOnly + " " + timeOnly + ":00";
-//            System.out.println(dateTime);
+            DateFormat inputFormat = new SimpleDateFormat("hh:mm aa");
+            DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
+            String timeOnly = outputFormat.format(inputFormat.parse(startTimeSelected));
+            String dateTime = dateOnly + " " + timeOnly;
 
-//        String input = "2014-04-25 17:03:13";
-        DateFormat inputFormat = new SimpleDateFormat("hh:mm aa");
-        DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
-//        String timeOnly = outputFormat + ":00";
-//        System.out.println(outputFormat);
-        String timeOnly = outputFormat.format(inputFormat.parse(startTimeSelected));
-//        System.out.println(timeOnly);
+            // Adds 30 min to the time to calculate for appointment end time
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+            Date d = df.parse(startTimeSelected);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(d);
+            cal.add(Calendar.MINUTE, 30);
+            String newTime = df.format(cal.getTime());
+            String endDateTime = dateOnly + " " + newTime + ":00";
 
-
-
-//        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(outputFormat.parse(startTimeSelected));
-        cal.add(Calendar.MINUTE, 30);
-//
-        String endTime = outputFormat.format(cal.getTime());
-        System.out.println(endTime);
-
-        // Adds 30 min to the time to calculate for appointment end time
-//        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-//        Date d = df.parse(timeOnly);
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(d);
-//        cal.add(Calendar.MINUTE, 30);
-//        String newTime = df.format(cal.getTime());
-//        String endDateTime = dateOnly + " " + newTime + ":00";
-//        System.out.println(endDateTime);
+            // Get Current Time
+            final Date currentTime = new Date();
+            final SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String currentDateTime = formattedDate.format(currentTime);
 
 
-
-        // Get Current Time
-        final Date currentTime = new Date();
-
-        final SimpleDateFormat formattedDate =
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-// Give it to me in GMT time.
-        formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
-//        formattedDate.format(currentTime);
+            try {
+                Statement statement = Database.getStatement();
+                String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
+                        "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
+                        title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
+                        type.getText() + "', '" + url.getText() + "', '" + dateTime + "', '" + endDateTime + "', '" +
+                        currentDateTime + "', '" + docController.getUser().getUsername() + "')";
+                Boolean insertResult = statement.execute(insertQuery);
 
 
+                // Select Appointment
+                String selectQuery = "SELECT * FROM appointment WHERE appointmentId = '" + appointmentId.getText() + "'";
+                ResultSet result = statement.executeQuery(selectQuery);
+                result.next();
+                Appointment appointment = new Appointment();
+                appointment.setAppointmentId(result.getString(1));
+                appointment.setCustomerId(result.getString(2));
+                appointment.setUserId(result.getString(3));
+                appointment.setTitle(result.getString(4));
+                appointment.setDescription(result.getString(5));
+                appointment.setLocation(result.getString(6));
+                appointment.setContact(result.getString(7));
+                appointment.setType(result.getString(8));
+                appointment.setUrl(result.getString(9));
+                appointment.setStart(result.getString(10));
+                appointment.setEnd(result.getString(11));
+                appointment.setCreateDate(result.getString(12));
+                appointment.setCreatedBy(result.getString(13));
+                appointment.setStart(result.getString(14));
+                docController.getAppointmentList().add(appointment);
 
-//        LocalDateTime dateTimeNow = LocalDateTime.now();
-//        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-
-        String currentDateTime = formattedDate.format(currentTime);
-
-//        try {
-//            Statement statement = Database.getStatement();
-//            String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
-//                    "type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
-//                    title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" +
-//                    type.getText() + "', '" + url.getText() + "', '" + dateTime + "', '" + endDateTime + "', '" +
-//                    currentDateTime + "', '" + docController.getUser().getUsername() + "')";
-//            Boolean insertResult = statement.execute(insertQuery);
-//
-//            final Node previous = (Node) event.getSource();
-//            final Stage stage = (Stage) previous.getScene().getWindow();
-//            stage.close();
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//        }
-
+                final Node previous = (Node) event.getSource();
+                final Stage stage = (Stage) previous.getScene().getWindow();
+                stage.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
