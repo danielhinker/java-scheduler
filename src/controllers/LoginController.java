@@ -52,7 +52,7 @@ public class LoginController implements Initializable {
 //                currentUser.setUsername(results.getString("userName"));
 //                statement.close();
 ////                Logger.log(username, true);
-                System.out.println(results.next());
+//                System.out.println(results.next());
                 try {
                     ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Menu.fxml"));

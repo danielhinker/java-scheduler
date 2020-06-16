@@ -34,6 +34,7 @@ public class AddAppointmentController implements Initializable {
     void setDocController(MenuController docController) {
 
         this.docController = docController;
+        type.setItems(meetingTypes);
         customerId.setText(docController.customerClicked.getCustomerId());
         userId.setText(docController.getUser().getUserId());
         Statement statement = Database.getStatement();
@@ -61,11 +62,12 @@ public class AddAppointmentController implements Initializable {
     @FXML private TextField description;
     @FXML private TextField location;
     @FXML private TextField contact;
-    @FXML private TextField type;
+//    @FXML private TextField type;
     @FXML private TextField url;
     @FXML private DatePicker date;
     @FXML private ComboBox start;
     @FXML private ComboBox end;
+    @FXML private ComboBox type;
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
 
@@ -73,7 +75,7 @@ public class AddAppointmentController implements Initializable {
             "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "01:30 PM", "2:00 PM",
             "02:30 PM", "03:00 PM");
 
-    private ObservableList<String> meetingTypes = FXCollections.observableArrayList("First", "Follow-Up", "Final");
+    private ObservableList<String> meetingTypes = FXCollections.observableArrayList("In Person", "Phone", "Video");
 
     public void handleCancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -121,11 +123,9 @@ public class AddAppointmentController implements Initializable {
             String newTime = df.format(cal.getTime());
             String endDateTime = dateOnly + " " + newTime + ":00";
 
-            // Get Current Time
-//            final Date currentTime = new Date();
-//            final SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
             String currentDateTime = Utilities.getCurrentDateTime();
+
+            String typeSelected = meetingTypes.get(type.getSelectionModel().getSelectedIndex());
 
 
             try {
@@ -133,7 +133,7 @@ public class AddAppointmentController implements Initializable {
                 String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
                         "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
                         title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
-                        type.getText() + "', '" + url.getText() + "', '" + dateTime + "', '" + endDateTime + "', '" +
+                        typeSelected + "', '" + url.getText() + "', '" + dateTime + "', '" + endDateTime + "', '" +
                         currentDateTime + "', '" + docController.getUser().getUsername() + "')";
                 Boolean insertResult = statement.execute(insertQuery);
 

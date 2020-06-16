@@ -53,8 +53,6 @@ public class AppointmentTypesController implements Initializable {
         videoResult.next();
 
         video.setText(videoResult.getString("total"));
-//        Statement statement2 = Database.getStatement();
-//        Statement statement3 = Database.getStatement();
 
         String inPersonQuery = "SELECT COUNT(*) AS total FROM appointment WHERE type = 'In Person' and MONTH(start) = '" + index + "'";
         ResultSet inPersonResult = statement.executeQuery(inPersonQuery);
@@ -62,7 +60,6 @@ public class AppointmentTypesController implements Initializable {
         inPerson.setText(inPersonResult.getString("total"));
 
         String phoneQuery = "SELECT COUNT(*) AS total FROM appointment WHERE type = 'Phone' and MONTH(start) = '" + index + "'";
-
 
         ResultSet phoneResult = statement.executeQuery(phoneQuery);
 

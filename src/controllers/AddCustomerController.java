@@ -129,7 +129,7 @@ public class AddCustomerController implements Initializable {
             searchQuery = "SELECT * FROM customer WHERE (customerName = '" + name.getText() + "')";
             result = statement.executeQuery(searchQuery);
 
-
+            result.next();
             docController.getCustomerList().add(Customer.setCustomer(result));
 
         } catch (SQLException e) {

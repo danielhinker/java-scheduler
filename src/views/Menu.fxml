@@ -34,16 +34,16 @@
             <TableColumn fx:id="appointmentEnd" minWidth="0.0" prefWidth="128.0" text="End" />
          </columns>
       </TableView>
-      <Button fx:id="addAppointmentButton" layoutX="850.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleAddAppointment" prefHeight="27.0" prefWidth="59.0" text="Add" />
-      <Button fx:id="updateAppointmentButton" layoutX="850.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleUpdateAppointment" text="Update" />
-      <Button fx:id="deleteAppointmentButton" layoutX="850.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefHeight="27.0" prefWidth="59.0" text="Delete" />
-      <Button fx:id="appointmentTypeButton" layoutX="52.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleAppointmentType" prefHeight="30.0" prefWidth="170.0" text="Appointment Type Report" />
-      <Button fx:id="allAppointmentsButton" layoutX="52.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAllAppointments" prefHeight="30.0" prefWidth="170.0" text="All Appointments" />
-      <Button fx:id="consultantsSchedule" layoutX="290.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleConsultantsSchedule" prefHeight="30.0" prefWidth="170.0" text="Consultants Schedule" />
-      <Button fx:id="logoffButton" layoutX="851.0" layoutY="564.0" mnemonicParsing="false" onAction="#handleLogOff" text="Log off" />
-      <Button fx:id="addCustomerButton" layoutX="850.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="27.0" prefWidth="59.0" text="Add" />
-      <Button fx:id="updateCustomerButton" layoutX="850.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleUpdateCustomer" text="Update" />
-      <Button fx:id="deleteCustomerButton" layoutX="850.0" layoutY="208.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="27.0" prefWidth="59.0" text="Delete" />
+      <Button layoutX="850.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleAddAppointment" prefHeight="27.0" prefWidth="59.0" text="Add" />
+      <Button layoutX="850.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleUpdateAppointment" text="Update" />
+      <Button layoutX="850.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleDeleteAppointment" prefHeight="27.0" prefWidth="59.0" text="Delete" />
+      <Button layoutX="52.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleAppointmentType" prefHeight="30.0" prefWidth="170.0" text="Appointment Type Report" />
+      <Button layoutX="52.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleAllAppointments" prefHeight="30.0" prefWidth="170.0" text="All Appointments" />
+      <Button layoutX="290.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleConsultantsSchedule" prefHeight="30.0" prefWidth="170.0" text="Consultants Schedule" />
+      <Button layoutX="851.0" layoutY="564.0" mnemonicParsing="false" onAction="#handleLogOff" text="Log off" />
+      <Button layoutX="850.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="27.0" prefWidth="59.0" text="Add" />
+      <Button layoutX="850.0" layoutY="158.0" mnemonicParsing="false" onAction="#handleUpdateCustomer" text="Update" />
+      <Button layoutX="850.0" layoutY="208.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="27.0" prefWidth="59.0" text="Delete" />
       <Text layoutX="364.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main Menu">
          <font>
             <Font size="26.0" />
