@@ -38,17 +38,14 @@ public class Customer {
 
     public static Customer setCustomer(ResultSet result) throws SQLException {
         Customer customer = new Customer();
-        while (result.next()) {
-
-            customer.setCustomerId(result.getString(1));
-            customer.setCustomerName(result.getString(2));
-            customer.setAddressId(result.getString(3));
-            customer.setActive(result.getString(4));
-            customer.setCreateDate(result.getString(5));
-            customer.setCreatedBy(result.getString(6));
-            customer.setLastUpdate(result.getString(7));
-            customer.setLastUpdateBy(result.getString(8));
-        }
+        customer.setCustomerId(result.getString(1));
+        customer.setCustomerName(result.getString(2));
+        customer.setAddressId(result.getString(3));
+        customer.setActive(result.getString(4));
+        customer.setCreateDate(result.getString(5));
+        customer.setCreatedBy(result.getString(6));
+        customer.setLastUpdate(result.getString(7));
+        customer.setLastUpdateBy(result.getString(8));
         return customer;
     }
 

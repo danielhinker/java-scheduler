@@ -77,12 +77,9 @@ public class MenuController implements Initializable {
         String query = "SELECT * FROM customer";
         try {
             ResultSet results = statement.executeQuery(query);
-
-            int columnCount = results.getMetaData().getColumnCount();
-
-
+            while (results.next()) {
                 customerList.add(Customer.setCustomer(results));
-
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -91,27 +88,8 @@ public class MenuController implements Initializable {
         query = "SELECT * FROM appointment";
         try {
             ResultSet results = statement.executeQuery(query);
-
             while (results.next()) {
-                Appointment appointment = new Appointment();
-
-                appointment.setAppointmentId(results.getString(1));
-                appointment.setCustomerId(results.getString(2));
-                appointment.setUserId(results.getString(3));
-                appointment.setTitle(results.getString(4));
-                appointment.setDescription(results.getString(5));
-                appointment.setLocation(results.getString(6));
-                appointment.setContact(results.getString(7));
-                appointment.setType(results.getString(8));
-                appointment.setUrl(results.getString(9));
-                appointment.setStart(results.getString(10));
-                appointment.setEnd(results.getString(11));
-                appointment.setCreateDate(results.getString(12));
-                appointment.setCreatedBy(results.getString(13));
-                appointment.setLastUpdate(results.getString(14));
-                appointment.setLastUpdateBy(results.getString(15));
-                appointmentList.add(appointment);
-
+                appointmentList.add(Appointment.setAppointment(results));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -160,7 +138,6 @@ public class MenuController implements Initializable {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-//            loader.<MenuController>getController().setDocController(this);
             stage.show();
 
         } catch (Exception e) {
@@ -175,9 +152,6 @@ public class MenuController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             loader.<AddCustomerController>getController().setDocController(this);
-//            AddCustomerController controller = loader.getController();
-//            controller.partTable.getItems().setAll((inventory.getAllParts()));
-
             stage.show();
 
         } catch (Exception e) {

@@ -58,9 +58,9 @@ public class Appointment {
     public void setLastUpdate(String lastUpdate) { this.lastUpdate = lastUpdate; }
     public void setLastUpdateBy(String lastUpdateBy) { this.lastUpdateBy = lastUpdateBy; }
 
-    public static Appointment setAppointment(ResultSet result) {
+    public static Appointment setAppointment(ResultSet result) throws SQLException {
         Appointment appointment = new Appointment();
-        try {
+//        try {
             appointment.setAppointmentId(result.getString(1));
             appointment.setCustomerId(result.getString(2));
             appointment.setUserId(result.getString(3));
@@ -76,9 +76,9 @@ public class Appointment {
             appointment.setCreatedBy(result.getString(13));
             appointment.setLastUpdate(result.getString(14));
             appointment.setLastUpdateBy(result.getString(15));
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//        }
         return appointment;
     }
 
