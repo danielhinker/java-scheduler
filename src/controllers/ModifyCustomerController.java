@@ -8,10 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import models.Address;
-import models.City;
-import models.Country;
-import models.Customer;
+import models.*;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -90,11 +87,7 @@ public class ModifyCustomerController implements Initializable {
         try {
 
             // Get Current Time
-            final java.util.Date currentTime = new Date();
-            final SimpleDateFormat formattedDate =
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
-            String currentDateTime = formattedDate.format(currentTime);
+            String currentDateTime = Utilities.getCurrentDateTime();
 
             String userName = docController.getUser().getUsername();
             Statement statement = Database.getStatement();
@@ -166,23 +159,12 @@ public class ModifyCustomerController implements Initializable {
             String customerSelectQuery = "SELECT * FROM customer WHERE (customerId = '" + docController.customerClicked.getCustomerId() + "')";
             ResultSet CustomerResult = statement.executeQuery(customerSelectQuery);
             CustomerResult.next();
-//            String addressId = customerResult.getString(3);
+
 
             // Set Customer
-            Customer customer = new Customer();
-//            CustomerResult.next();
-            customer.setCustomerId(CustomerResult.getString(1));
-            customer.setCustomerName(CustomerResult.getString(2));
-            customer.setAddressId(CustomerResult.getString(3));
-            customer.setActive(CustomerResult.getString(4));
-            customer.setCreateDate(CustomerResult.getString(5));
-            customer.setCreatedBy(CustomerResult.getString(6));
-            customer.setLastUpdate(CustomerResult.getString(7));
-            customer.setLastUpdateBy(CustomerResult.getString(8));
+            docController.getCustomerList().set(docController.customerClickedIndex, Customer.setCustomer(CustomerResult));
 
-            docController.getCustomerList().set(docController.customerClickedIndex, customer);
 
-//            System.out.println(city.getCity());
         } catch (SQLException e) {
             System.out.println(e);
         }

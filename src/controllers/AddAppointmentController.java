@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 
 import javafx.event.ActionEvent;
 import models.Appointment;
+import models.Utilities;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -121,10 +122,10 @@ public class AddAppointmentController implements Initializable {
             String endDateTime = dateOnly + " " + newTime + ":00";
 
             // Get Current Time
-            final Date currentTime = new Date();
-            final SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
-            String currentDateTime = formattedDate.format(currentTime);
+//            final Date currentTime = new Date();
+//            final SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String currentDateTime = Utilities.getCurrentDateTime();
 
 
             try {
@@ -141,20 +142,7 @@ public class AddAppointmentController implements Initializable {
                 String selectQuery = "SELECT * FROM appointment WHERE appointmentId = '" + appointmentId.getText() + "'";
                 ResultSet result = statement.executeQuery(selectQuery);
                 result.next();
-                Appointment appointment = new Appointment();
-                appointment.setAppointmentId(result.getString(1));
-                appointment.setCustomerId(result.getString(2));
-                appointment.setUserId(result.getString(3));
-                appointment.setTitle(result.getString(4));
-                appointment.setDescription(result.getString(5));
-                appointment.setLocation(result.getString(6));
-                appointment.setContact(result.getString(7));
-                appointment.setType(result.getString(8));
-                appointment.setUrl(result.getString(9));
-                appointment.setStart(result.getString(10));
-                appointment.setEnd(result.getString(11));
-                appointment.setCreateDate(result.getString(12));
-                appointment.setCreatedBy(result.getString(13));
+                Appointment appointment = Appointment.setAppointment(result);
                 docController.getAppointmentList().add(appointment);
 
                 final Node previous = (Node) event.getSource();

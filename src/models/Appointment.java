@@ -1,5 +1,8 @@
 package models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Appointment {
     private String appointmentId;
     private String customerId;
@@ -54,6 +57,30 @@ public class Appointment {
     public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
     public void setLastUpdate(String lastUpdate) { this.lastUpdate = lastUpdate; }
     public void setLastUpdateBy(String lastUpdateBy) { this.lastUpdateBy = lastUpdateBy; }
+
+    public static Appointment setAppointment(ResultSet result) {
+        Appointment appointment = new Appointment();
+        try {
+            appointment.setAppointmentId(result.getString(1));
+            appointment.setCustomerId(result.getString(2));
+            appointment.setUserId(result.getString(3));
+            appointment.setTitle(result.getString(4));
+            appointment.setDescription(result.getString(5));
+            appointment.setLocation(result.getString(6));
+            appointment.setContact(result.getString(7));
+            appointment.setType(result.getString(8));
+            appointment.setUrl(result.getString(9));
+            appointment.setStart(result.getString(10));
+            appointment.setEnd(result.getString(11));
+            appointment.setCreateDate(result.getString(12));
+            appointment.setCreatedBy(result.getString(13));
+            appointment.setLastUpdate(result.getString(14));
+            appointment.setLastUpdateBy(result.getString(15));
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return appointment;
+    }
 
     public String getAppointmentId() { return appointmentId; }
     public String getCustomerId() { return customerId; }

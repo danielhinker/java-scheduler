@@ -7,10 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
-import models.Address;
-import models.City;
-import models.Country;
-import models.Customer;
+import models.*;
 
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -63,11 +60,11 @@ public class AddCustomerController implements Initializable {
         try {
 
             // Get Current Time
-            final java.util.Date currentTime = new Date();
-            final SimpleDateFormat formattedDate =
-                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
-            String currentDateTime = formattedDate.format(currentTime);
+//            final java.util.Date currentTime = new Date();
+//            final SimpleDateFormat formattedDate =
+//                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+            String currentDateTime = Utilities.getCurrentDateTime();
 
             String userName = docController.getUser().getUsername();
 
@@ -86,7 +83,6 @@ public class AddCustomerController implements Initializable {
             result.next();
             country.setCountryId(result.getString(1));
             country.setCountry(result.getString(2));
-            System.out.println(country.getCountry());
 
             // Insert City
             insertQuery = "INSERT IGNORE INTO city (city, countryId, createDate, createdBy) VALUES ('" +
@@ -133,21 +129,9 @@ public class AddCustomerController implements Initializable {
             searchQuery = "SELECT * FROM customer WHERE (customerName = '" + name.getText() + "')";
             result = statement.executeQuery(searchQuery);
 
-            // Set Customer
-            Customer customer = new Customer();
-            result.next();
-            customer.setCustomerId(result.getString(1));
-            customer.setCustomerName(result.getString(2));
-            customer.setAddressId(result.getString(3));
-            customer.setActive(result.getString(4));
-            customer.setCreateDate(result.getString(5));
-            customer.setCreatedBy(result.getString(6));
-            customer.setLastUpdate(result.getString(7));
-            customer.setLastUpdateBy(result.getString(8));
 
-            docController.getCustomerList().add(customer);
+            docController.getCustomerList().add(Customer.setCustomer(result));
 
-            System.out.println(city.getCity());
         } catch (SQLException e) {
             System.out.println(e);
         }

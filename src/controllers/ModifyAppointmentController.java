@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 import java.util.TimeZone;
 import java.time.*;
 import javafx.scene.control.*;
+import models.Utilities;
 
 public class ModifyAppointmentController implements Initializable {
 
@@ -124,10 +125,10 @@ public class ModifyAppointmentController implements Initializable {
             String endDateTime = dateOnly + " " + newTime + ":00";
 
         // Get Current Time
-        final Date currentTime = new Date();
-        final SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String currentDateTime = formattedDate.format(currentTime);
+//        final Date currentTime = new Date();
+//        final SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String currentDateTime = Utilities.getCurrentDateTime();
 
         try {
             Statement statement = Database.getStatement();
@@ -144,20 +145,7 @@ public class ModifyAppointmentController implements Initializable {
             String selectQuery = "SELECT * FROM appointment WHERE appointmentId = '" + appointmentId.getText() + "'";
             ResultSet result = statement.executeQuery(selectQuery);
             result.next();
-            Appointment appointment = new Appointment();
-            appointment.setAppointmentId(result.getString(1));
-            appointment.setCustomerId(result.getString(2));
-            appointment.setUserId(result.getString(3));
-            appointment.setTitle(result.getString(4));
-            appointment.setDescription(result.getString(5));
-            appointment.setLocation(result.getString(6));
-            appointment.setContact(result.getString(7));
-            appointment.setType(result.getString(8));
-            appointment.setUrl(result.getString(9));
-            appointment.setStart(result.getString(10));
-            appointment.setEnd(result.getString(11));
-//            appointment.setStart(result.getString(14));
-            docController.getAppointmentList().set(docController.appointmentClickedIndex, appointment);
+            docController.getAppointmentList().set(docController.appointmentClickedIndex, Appointment.setAppointment(result));
 
             final Node previous = (Node) event.getSource();
             final Stage stage = (Stage) previous.getScene().getWindow();
