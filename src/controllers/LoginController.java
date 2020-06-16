@@ -15,17 +15,32 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class LoginController implements Initializable {
 
     @FXML private TextField usernameField;
     @FXML private TextField passwordField;
 
+//    private String currentDate;
     private User user;
     public User getUser() {
         return user;
     }
+
+    public static String getCurrentDate() {
+        // Get Current Time
+        final java.util.Date currentTime = new Date();
+        final SimpleDateFormat formattedDate =
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String currentDateTime = formattedDate.format(currentTime);
+        return currentDateTime;
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

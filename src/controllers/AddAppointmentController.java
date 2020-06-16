@@ -97,7 +97,7 @@ public class AddAppointmentController implements Initializable {
 //            String endTime = selectResult.getString(11);
 
         } catch (SQLException e) {
-
+            System.out.println(e);
         }
     }
 
@@ -155,7 +155,6 @@ public class AddAppointmentController implements Initializable {
                 appointment.setEnd(result.getString(11));
                 appointment.setCreateDate(result.getString(12));
                 appointment.setCreatedBy(result.getString(13));
-                appointment.setStart(result.getString(14));
                 docController.getAppointmentList().add(appointment);
 
                 final Node previous = (Node) event.getSource();

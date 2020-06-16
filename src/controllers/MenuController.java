@@ -222,24 +222,62 @@ public class MenuController implements Initializable {
             if (alertButton.get() == ButtonType.OK) {
                 try {
                     Statement statement = Database.getStatement();
-                    String appointmentSelectQuery = "SELECT * FROM appointment WHERE customerId = '" + customerClicked.getCustomerId() + "'";
+//                    String appointmentSelectQuery = "SELECT * FROM appointment WHERE customerId = '" + customerClicked.getCustomerId() + "'";
                     String appointmentDeleteQuery = "DELETE FROM appointment WHERE customerId = '" + customerClicked.getCustomerId() + "'";
                     String customerQuery = "DELETE FROM customer WHERE customerId = '" + customerClicked.getCustomerId() + "'";
 
-                    ResultSet selectResult = statement.executeQuery(appointmentSelectQuery);
-                    ObservableList<String> appointmentsToDelete = FXCollections.observableArrayList();
-                    while (selectResult.next()) {
-                        appointmentsToDelete.add(selectResult.getString(1));
-                    }
+//                    ResultSet selectResult = statement.executeQuery(appointmentSelectQuery);
+////                    ObservableList<String> appointmentsToDelete = FXCollections.observableArrayList();
+//                    while (selectResult.next()) {
+////                        appointmentsToDelete.add(selectResult.getString(1));
+//                        for (int i = 0; i < appointmentList.size(); i++) {
+//                            if (appointmentList.get(i).getAppointmentId() == selectResult.getString(1)) {
+//                                appointmentList.remove(i);
+//                            }
+//                        }
+//                    }
 
-                    for (int i = 0; i < appointmentsToDelete.size(); i++) {
-                        appointmentList.remove(appointmentsToDelete.get(i));
-                    }
                     int appointmentResult = statement.executeUpdate(appointmentDeleteQuery);
                     int customerResult = statement.executeUpdate(customerQuery);
+                    for (int i = 0; i < appointmentList.size(); i++) {
+                        appointmentList.remove(i);
+                    }
+//                    appointmentList = FXCollections.observableArrayList() ;
+                    String query = "SELECT * FROM appointment";
+                    try {
+                        ResultSet results = statement.executeQuery(query);
+
+                        while (results.next()) {
+                            Appointment appointment = new Appointment();
+
+                            appointment.setAppointmentId(results.getString(1));
+                            appointment.setCustomerId(results.getString(2));
+                            appointment.setUserId(results.getString(3));
+                            appointment.setTitle(results.getString(4));
+                            appointment.setDescription(results.getString(5));
+                            appointment.setLocation(results.getString(6));
+                            appointment.setContact(results.getString(7));
+                            appointment.setType(results.getString(8));
+                            appointment.setUrl(results.getString(9));
+                            appointment.setStart(results.getString(10));
+                            appointment.setEnd(results.getString(11));
+                            appointment.setCreateDate(results.getString(12));
+                            appointment.setCreatedBy(results.getString(13));
+                            appointment.setLastUpdate(results.getString(14));
+                            appointment.setLastUpdateBy(results.getString(15));
+
+//                            appointmentList.add(appointment);
+
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
 
                     customerList.remove(customerClicked);
-//                    appointmentList.remove(app)
+
+
+
 
                 } catch (SQLException e) {
                     System.out.println(e);
