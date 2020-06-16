@@ -49,6 +49,6 @@
             <Font size="26.0" />
          </font>
       </Text>
-      <Button fx:id="customerStatusButton" layoutX="290.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleCustomerStatus" prefHeight="30.0" prefWidth="170.0" text="Customers Status" />
+      <Button layoutX="290.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleActivityReport" prefHeight="30.0" prefWidth="170.0" text="Customers Status" />
    </children>
 </AnchorPane>

@@ -345,18 +345,18 @@ public class MenuController implements Initializable {
         }
     }
 
-//    public void handleCustomerStatus() {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/CustomerStatusReport.fxml"));
-//            Parent root = loader.load();
-//            Stage stage = new Stage();
-//            stage.setScene(new Scene(root));
-//            loader.<CustomerStatusController>getController().setDocController(this);
-//            stage.show();
-//
-//        } catch (Exception e) {
-//            System.out.println((e));
-//        }
-//    }
+    public void handleActivityReport() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ActivityReport.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            loader.<ActivityReportController>getController().setDocController(this);
+            stage.show();
+
+        } catch (Exception e) {
+            System.out.println((e));
+        }
+    }
 
 }
