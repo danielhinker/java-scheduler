@@ -72,9 +72,10 @@ public class AddAppointmentController implements Initializable {
     @FXML private Button cancelButton;
     @FXML private Button saveButton;
 
-    private ObservableList<String> startTimesList = FXCollections.observableArrayList("08:00 AM", "08:30 AM", "09:00 AM",
-            "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "01:30 PM", "2:00 PM",
-            "02:30 PM", "03:00 PM");
+    private ObservableList<String> startTimesList = FXCollections.observableArrayList("08:00 AM", "08:15 AM",
+            "08:30 AM", "08:45 AM", "09:00 AM", "09:15 AM", "09:30 AM", "09:45 AM", "10:00 AM", "10:15 AM", "10:30 AM",
+            "10:45 AM", "11:00 AM", "11:15 AM", "11:30 AM", "11:45 AM", "12:00 PM", "12:15 PM", "12:30 PM", "12:45 PM",
+            "01:00 PM", "01:15 PM", "01:30 PM", "01:45 PM", "02:00 PM", "02:15 PM", "02:30 PM", "02:45 PM", "03:00 PM");
 
     private ObservableList<String> endTimesList = FXCollections.observableArrayList("15 Minutes", "30 Minutes", "45 Minutes", "60 Minutes");
 
@@ -117,7 +118,7 @@ public class AddAppointmentController implements Initializable {
         String timeOnly = outputFormat.format(inputFormat.parse(startTimeSelected));
         String dateTime = dateOnly + " " + timeOnly;
 
-        // Adds 30 min to the time to calculate for appointment end time
+        // Sets End Time
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         Date d = df.parse(timeOnly);
         Calendar cal = Calendar.getInstance();
@@ -133,7 +134,7 @@ public class AddAppointmentController implements Initializable {
         }
         String newTime = df.format(cal.getTime());
         String endDateTime = dateOnly + " " + newTime;
-//            System.out.println(newTime);
+
         String currentDateTime = Utilities.getCurrentDateTime();
         String typeSelected = meetingTypes.get(type.getSelectionModel().getSelectedIndex());
 

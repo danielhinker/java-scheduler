@@ -110,50 +110,22 @@ public class ModifyCustomerController implements Initializable {
             cityResult.next();
             String countryId = cityResult.getString(3);
 
-            // Select Country
-//            String countySelectQuery = "SELECT * FROM country WHERE (countryId = '" + country.getText() + "')";
-//            ResultSet countryResult = statement.executeQuery(countySelectQuery);
-//            countryResult.next();
-//            String countryId = countryResult.getString(1);
-
             // Insert Address
             insertQuery = "UPDATE address SET address = '" + address.getText() + "', address2 = '" + address2.getText()
                     + "', cityId = '" + cityId + "', postalCode = '" + postal.getText() + "', phone = '"
                     + phone.getText() + "', lastUpdate = '" + currentDateTime + "', lastUpdateBy = '" + userName + "' WHERE addressId = '" + docController.customerClicked.getAddressId() + "'";
-            insertResults = statement.execute(insertQuery);
+            statement.execute(insertQuery);
 
             // Insert City
             insertQuery = "UPDATE city SET city = '" + city.getText() + "', countryId = '" + countryId + "', lastUpdate = '"
                 + currentDateTime + "', lastUpdateBy = '" + userName + "' WHERE cityId = '" + cityId + "'";
-            insertResults = statement.execute(insertQuery);
+            statement.execute(insertQuery);
 
             // Insert Country
             String countryInsertQuery = "UPDATE country SET country = '" + country.getText() + "', createDate = '"
                     + currentDateTime + "', lastUpdateBy = '" + userName + "'";
-            insertResults = statement.execute(insertQuery);
+            statement.execute(insertQuery);
 
-
-////             Set Country
-//            Country country = new Country();
-//            result.next();
-//            country.setCountryId(result.getString(1));
-//            country.setCountry(result.getString(2));
-//            System.out.println(country.getCountry());
-
-            // Set City
-//            City city = new City();
-//            result.next();
-//            city.setCityId(result.getString(1));
-//            city.setCity(result.getString(2));
-
-            // Set Address
-//            Address address = new Address();
-//            result.next();
-//            address.setAddressId(result.getString(1));
-//            address.setAddress(result.getString(2));
-//            address.setAddress2(result.getString(3));
-//            address.setCityId(result.getString(4));
-//            address.setPostalCode(result.getString(5));
 
             // Select Customer
             String customerSelectQuery = "SELECT * FROM customer WHERE (customerId = '" + docController.customerClicked.getCustomerId() + "')";
