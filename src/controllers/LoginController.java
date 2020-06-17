@@ -10,7 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.User;
+import models.Utilities;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
+
+import java.io.File;  // Import the File class
+
 
 public class LoginController implements Initializable {
 
@@ -35,6 +42,7 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
     }
 
     public void handleLogin(ActionEvent actionEvent) throws SQLException {
@@ -48,11 +56,18 @@ public class LoginController implements Initializable {
                 user = new User();
                 user.setUserId(results.getString(1));
                 user.setUsername(results.getString(2));
-//                currentUser = new User();
-//                currentUser.setUsername(results.getString("userName"));
-//                statement.close();
-////                Logger.log(username, true);
-//                System.out.println(results.next());
+                try {
+                    File file = new File("login-log.txt");
+                    file.createNewFile();
+                    PrintWriter myWriter = new PrintWriter(new FileWriter("login-log.txt", true));
+                    myWriter.write("UserID: '" + user.getUserId() + "', Username: '" + user.getUsername()
+                            + "', Login Time: '" + Utilities.getCurrentDateTime() + "'\n");
+                    myWriter.close();
+                } catch (IOException e) {
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
+                }
+
                 try {
                     ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Menu.fxml"));
@@ -62,12 +77,33 @@ public class LoginController implements Initializable {
                     loader.<MenuController>getController().setDocController(this);
                     stage.show();
 
+                    Statement statement2 = Database.getStatement();
+                    String query2 = "SELECT * FROM appointment WHERE NOW() > start - INTERVAL 15 MINUTE AND NOW() < start";
+
+//                   START = 11:15am  NOW() = 17:55   now() - INTERVAL 15 min = 17:40
+
+                    try {
+                        ResultSet result2 = statement2.executeQuery(query2);
+                        if (result2.next()) {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Appointment starts within 15 minutes");
+                            alert.show();
+                        }
+                    } catch (SQLException e) {
+                        System.out.println(e);
+                    }
+
                 } catch (Exception e) {
                     System.out.println((e));
                 }
 //                return true;
 //                changeView();
             } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error");
+                alert.setHeaderText("Incorrect Username or Password");
+                alert.show();
 //                System.out.println("failed");
 //                Logger.log(username, false);
 //                return false;

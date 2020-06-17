@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import models.Appointment;
 import models.Customer;
 import models.User;
+import models.Utilities;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -57,6 +58,7 @@ public class MenuController implements Initializable {
     void setDocController(LoginController docController) {
         this.docController = docController;
         this.user = docController.getUser();
+
     }
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -72,6 +74,7 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
 
         Statement statement = Database.getStatement();
         String query = "SELECT * FROM customer";
@@ -129,6 +132,7 @@ public class MenuController implements Initializable {
             appointmentClicked = appointmentTable.getSelectionModel().getSelectedItem();
             appointmentClickedIndex = appointmentTable.getSelectionModel().getSelectedIndex();
         });
+
     }
 
     public void handleLogOff(ActionEvent actionEvent) {

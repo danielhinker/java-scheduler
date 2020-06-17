@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import models.Appointment;
 import models.Utilities;
 
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,6 +76,8 @@ public class AddAppointmentController implements Initializable {
             "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "01:30 PM", "2:00 PM",
             "02:30 PM", "03:00 PM");
 
+    private ObservableList<String> endTimesList = FXCollections.observableArrayList("15 Minutes", "30 Minutes", "45 Minutes", "60 Minutes");
+
     private ObservableList<String> meetingTypes = FXCollections.observableArrayList("In Person", "Phone", "Video");
 
     public void handleCancel() {
@@ -104,61 +107,80 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-    public void handleSave(ActionEvent event) throws ParseException {
-        try {
+    public void handleSave(ActionEvent event) throws ParseException, SQLException {
 
-            LocalDate dateOnly = date.getValue();
-            String startTimeSelected = startTimesList.get(start.getSelectionModel().getSelectedIndex());
-            DateFormat inputFormat = new SimpleDateFormat("hh:mm aa");
-            DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
-            String timeOnly = outputFormat.format(inputFormat.parse(startTimeSelected));
-            String dateTime = dateOnly + " " + timeOnly;
 
-            // Adds 30 min to the time to calculate for appointment end time
-            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-            Date d = df.parse(startTimeSelected);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(d);
+        LocalDate dateOnly = date.getValue();
+        String startTimeSelected = startTimesList.get(start.getSelectionModel().getSelectedIndex());
+        DateFormat inputFormat = new SimpleDateFormat("hh:mm aa");
+        DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
+        String timeOnly = outputFormat.format(inputFormat.parse(startTimeSelected));
+        String dateTime = dateOnly + " " + timeOnly;
+
+        // Adds 30 min to the time to calculate for appointment end time
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+        Date d = df.parse(timeOnly);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        if (end.getSelectionModel().getSelectedIndex() == 0) {
+            cal.add(Calendar.MINUTE, 15);
+        } else if (end.getSelectionModel().getSelectedIndex() == 1) {
             cal.add(Calendar.MINUTE, 30);
-            String newTime = df.format(cal.getTime());
-            String endDateTime = dateOnly + " " + newTime + ":00";
-
-            String currentDateTime = Utilities.getCurrentDateTime();
-
-            String typeSelected = meetingTypes.get(type.getSelectionModel().getSelectedIndex());
-
-
-            try {
-                Statement statement = Database.getStatement();
-                String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
-                        "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
-                        title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
-                        typeSelected + "', '" + url.getText() + "', '" + dateTime + "', '" + endDateTime + "', '" +
-                        currentDateTime + "', '" + docController.getUser().getUsername() + "')";
-                Boolean insertResult = statement.execute(insertQuery);
+        } else if (end.getSelectionModel().getSelectedIndex() == 2) {
+            cal.add(Calendar.MINUTE, 45);
+        } else {
+            cal.add(Calendar.MINUTE, 60);
+        }
+        String newTime = df.format(cal.getTime());
+        String endDateTime = dateOnly + " " + newTime;
+//            System.out.println(newTime);
+        String currentDateTime = Utilities.getCurrentDateTime();
+        String typeSelected = meetingTypes.get(type.getSelectionModel().getSelectedIndex());
 
 
-                // Select Appointment
-                String selectQuery = "SELECT * FROM appointment WHERE appointmentId = '" + appointmentId.getText() + "'";
-                ResultSet result = statement.executeQuery(selectQuery);
-                result.next();
-                Appointment appointment = Appointment.setAppointment(result);
-                docController.getAppointmentList().add(appointment);
+        // Check for overlapping appointments
+            Statement statementQuery = Database.getStatement();
+            String selectQuery2 = "SELECT * FROM appointment WHERE (start > '" + dateTime + "' AND start < '" + endDateTime + "')" +
+                    " OR (end > '" + dateTime + "' AND end < '" + endDateTime + "')";
+            ResultSet selectResult2 = statementQuery.executeQuery(selectQuery2);
+            Connection connection = Database.getConnection();
 
-                final Node previous = (Node) event.getSource();
-                final Stage stage = (Stage) previous.getScene().getWindow();
-                stage.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+        if (selectResult2.next()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Overlapping appointment times.");
+            alert.show();
+            return;
+        } else {
+
+
+            Statement statement = Database.getStatement();
+            String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
+                    "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
+                    title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
+                    typeSelected + "', '" + url.getText() + "', '" + dateTime + "', '" + endDateTime + "', '" +
+                    currentDateTime + "', '" + docController.getUser().getUsername() + "')";
+            Boolean insertResult = statement.execute(insertQuery);
+
+
+            // Select Appointment
+            String selectQuery = "SELECT * FROM appointment WHERE appointmentId = '" + appointmentId.getText() + "'";
+            ResultSet result = statement.executeQuery(selectQuery);
+            result.next();
+            Appointment appointment = Appointment.setAppointment(result);
+            docController.getAppointmentList().add(appointment);
+
+            final Node previous = (Node) event.getSource();
+            final Stage stage = (Stage) previous.getScene().getWindow();
+            stage.close();
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         start.setItems(startTimesList);
+        end.setItems(endTimesList);
     }
 
 }

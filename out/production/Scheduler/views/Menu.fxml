@@ -23,15 +23,15 @@
       <TableView fx:id="appointmentTable" layoutX="51.0" layoutY="288.0" prefHeight="200.0" prefWidth="763.0">
          <columns>
             <TableColumn fx:id="appointmentId" prefWidth="50.0" text="Appt ID" />
-            <TableColumn fx:id="appointmentCustomerId" prefWidth="51.0" text="Cust ID" />
-            <TableColumn fx:id="appointmentUserId" prefWidth="50.0" text="User ID" />
-            <TableColumn fx:id="appointmentTitle" prefWidth="36.0" text="Title" />
+            <TableColumn fx:id="appointmentCustomerId" prefWidth="48.0" text="Cust ID" />
+            <TableColumn fx:id="appointmentUserId" prefWidth="51.0" text="User ID" />
+            <TableColumn fx:id="appointmentTitle" prefWidth="38.0" text="Title" />
             <TableColumn fx:id="appointmentDescription" prefWidth="112.0" text="Desc" />
-            <TableColumn fx:id="appointmentLocation" prefWidth="72.0" text="Location" />
-            <TableColumn fx:id="appointmentContact" prefWidth="72.0" text="Contact" />
-            <TableColumn fx:id="appointmentType" prefWidth="71.0" text="Type" />
-            <TableColumn fx:id="appointmentStart" prefWidth="120.0" text="Start" />
-            <TableColumn fx:id="appointmentEnd" minWidth="0.0" prefWidth="128.0" text="End" />
+            <TableColumn fx:id="appointmentLocation" prefWidth="54.0" text="Location" />
+            <TableColumn fx:id="appointmentContact" prefWidth="53.0" text="Contact" />
+            <TableColumn fx:id="appointmentType" prefWidth="67.0" text="Type" />
+            <TableColumn fx:id="appointmentStart" prefWidth="138.0" text="Start" />
+            <TableColumn fx:id="appointmentEnd" minWidth="0.0" prefWidth="151.0" text="End" />
          </columns>
       </TableView>
       <Button layoutX="850.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleAddAppointment" prefHeight="27.0" prefWidth="59.0" text="Add" />
@@ -49,6 +49,6 @@
             <Font size="26.0" />
          </font>
       </Text>
-      <Button layoutX="290.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleActivityReport" prefHeight="30.0" prefWidth="170.0" text="Customers Status" />
+      <Button layoutX="290.0" layoutY="576.0" mnemonicParsing="false" onAction="#handleActivityReport" prefHeight="30.0" prefWidth="170.0" text="Activity Report" />
    </children>
 </AnchorPane>
