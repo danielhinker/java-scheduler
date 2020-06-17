@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
@@ -31,17 +32,37 @@ public class LoginController implements Initializable {
 
     @FXML private TextField usernameField;
     @FXML private TextField passwordField;
+    @FXML private RadioButton english;
+    @FXML private RadioButton spanish;
 
-//    private String currentDate;
+    public void handleEnglish() {
+        Locale english = new Locale("en", "US");
+        ResourceBundle resources = ResourceBundle.getBundle("language", english);
+        incorrectLogin.setTitle(resources.getString("title"));
+        incorrectLogin.setHeaderText(resources.getString("header"));
+    }
+
+    public void handleSpanish() {
+        Locale spanish = new Locale("es", "ES");
+        ResourceBundle resources = ResourceBundle.getBundle("language", spanish);
+        incorrectLogin.setTitle(resources.getString("title"));
+        incorrectLogin.setHeaderText(resources.getString("header"));
+    }
+
     private User user;
     public User getUser() {
         return user;
     }
 
+    Alert incorrectLogin = new Alert(Alert.AlertType.INFORMATION);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        Locale english = new Locale("en", "US");
+        resources = ResourceBundle.getBundle("language", english);
+        incorrectLogin.setTitle(resources.getString("title"));
+        incorrectLogin.setHeaderText(resources.getString("header"));
 
     }
 
@@ -100,10 +121,8 @@ public class LoginController implements Initializable {
 //                return true;
 //                changeView();
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText("Incorrect Username or Password");
-                alert.show();
+
+                incorrectLogin.show();
 //                System.out.println("failed");
 //                Logger.log(username, false);
 //                return false;
