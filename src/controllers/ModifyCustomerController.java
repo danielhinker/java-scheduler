@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -76,7 +77,31 @@ public class ModifyCustomerController implements Initializable {
         stage.close();
     }
 
+    public void validateForm() throws CustomException {
+        if (!postal.getText().matches("\\d+") ||
+                !phone.getText().matches("\\d+") ||
+                !name.getText().matches("[a-zA-Z]+") ||
+                !country.getText().matches("[a-zA-Z]+") ||
+                !city.getText().matches("[a-zA-Z]+") ||
+                !address.getText().matches("^[a-zA-Z0-9,.']+$") ||
+                !address2.getText().matches("^[a-zA-Z0-9,.']+$")) {
+
+            throw new CustomException("Invalid Fields");
+
+        }
+    }
+
     public void handleSave(ActionEvent event) {
+        try {
+            validateForm();
+        } catch (CustomException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please make sure all entries are filled in and contain only valid values");
+            alert.show();
+            return;
+        }
+
         try {
 
             // Get Current Time
