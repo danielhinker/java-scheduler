@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import models.Appointment;
 import models.Utilities;
-import org.omg.CORBA.DynAnyPackage.Invalid;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -116,21 +115,20 @@ public class AddAppointmentController implements Initializable {
         System.out.println(startDateTime);
 
 
-
 //         Converts appt time to UTC
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df.setTimeZone(TimeZone.getDefault());
-        Date date = df.parse(startDateTime);
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String startDateTimeUTC = df.format(date);
+        SimpleDateFormat startDateTimeFormatUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        startDateTimeFormatUTC.setTimeZone(TimeZone.getDefault());
+        Date date = startDateTimeFormatUTC.parse(startDateTime);
+        startDateTimeFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String startDateTimeUTC = startDateTimeFormatUTC.format(date);
         System.out.println(startDateTimeUTC);
 
 
         // Sets End Time as localtime
-        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
-        Date d = df2.parse(timeOnly);
+        SimpleDateFormat endTimeFormat = new SimpleDateFormat("HH:mm:ss");
+        Date parsed = endTimeFormat.parse(timeOnly);
         Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
+        cal.setTime(parsed);
         if (end.getSelectionModel().getSelectedIndex() == 0) {
             cal.add(Calendar.MINUTE, 15);
         } else if (end.getSelectionModel().getSelectedIndex() == 1) {
@@ -142,17 +140,15 @@ public class AddAppointmentController implements Initializable {
         }
 
 
-        String newTime = df2.format(cal.getTime());
+        String newTime = endTimeFormat.format(cal.getTime());
         String endDateTime = dateOnly + " " + newTime;
-//
-//        // Sets endtime to UTC
-        SimpleDateFormat df3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        df3.setTimeZone(TimeZone.getDefault());
-        Date date3 = df3.parse(endDateTime);
-        df3.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String formattedDate3 = df3.format(date3);
-        System.out.println(formattedDate3);
 
+//        // Sets endtime to UTC
+        SimpleDateFormat endDateTimeFormatUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        endDateTimeFormatUTC.setTimeZone(TimeZone.getDefault());
+        Date parsedEndTime = endDateTimeFormatUTC.parse(endDateTime);
+        endDateTimeFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String endDateTimeUTC = endDateTimeFormatUTC.format(parsedEndTime);
 
         String currentDateTime = Utilities.getCurrentDateTime();
         String typeSelected = meetingTypes.get(type.getSelectionModel().getSelectedIndex());
@@ -160,8 +156,8 @@ public class AddAppointmentController implements Initializable {
 
 //        // Check for overlapping appointments
             Statement statementQuery = Database.getStatement();
-            String selectQuery2 = "SELECT * FROM appointment WHERE (start >= '" + startDateTimeUTC + "' AND start < '" + formattedDate3 + "')" +
-                    " OR (end > '" + startDateTimeUTC + "' AND end <= '" + formattedDate3 + "')";
+            String selectQuery2 = "SELECT * FROM appointment WHERE (start >= '" + startDateTimeUTC + "' AND start < '" + endDateTimeUTC + "')" +
+                    " OR (end > '" + startDateTimeUTC + "' AND end <= '" + endDateTimeUTC + "')";
             ResultSet selectResult2 = statementQuery.executeQuery(selectQuery2);
 //
         if (selectResult2.next()) {
@@ -177,7 +173,7 @@ public class AddAppointmentController implements Initializable {
             String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
                     "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
                     title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
-                    typeSelected + "', '" + url.getText() + "', '" + startDateTimeUTC + "', '" + formattedDate3 + "', '" +
+                    typeSelected + "', '" + url.getText() + "', '" + startDateTimeUTC + "', '" + endDateTimeUTC + "', '" +
                     currentDateTime + "', '" + docController.getUser().getUsername() + "')";
             statement.execute(insertQuery);
 

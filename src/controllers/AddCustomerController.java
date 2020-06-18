@@ -50,19 +50,28 @@ public class AddCustomerController implements Initializable {
         stage.close();
     }
 
+    public void validateForm() {
+
+    }
+
     @FXML
-    public void handleSave(ActionEvent event) {
+    public void handleSave(ActionEvent event) throws Exception {
         try {
-            if (id.getText() == null || id.getText().trim().isEmpty() || name.getText() == null ||
-                    name.getText().trim().isEmpty() || address.getText() == null || address.getText().trim().isEmpty() ||
-                    country.getText() == null || city.getText().trim().isEmpty() || city == null ||
-                    city.getText().trim().isEmpty() || postal.getText() == null || postal.getText().trim().isEmpty() ||
-                    phone.getText() == null || phone.getText().trim().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error");
-                alert.setHeaderText("Please make sure all entries are filled in and valid");
-                alert.show();
-                return;
+            if (id.getText().trim().isEmpty() ||
+                    name.getText().trim().isEmpty() ||
+                    address.getText().trim().isEmpty() ||
+                    country.getText().trim().isEmpty() ||
+                    city.getText().trim().isEmpty() ||
+                    postal.getText().trim().isEmpty() ||
+                    phone.getText().trim().isEmpty()) {
+                throw new Exception();
+                }
+            } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Please make sure all entries are filled in and valid");
+                    alert.show();
+                    return;
             }
 
             String currentDateTime = Utilities.getCurrentDateTime();
@@ -132,10 +141,6 @@ public class AddCustomerController implements Initializable {
             result.next();
             docController.getCustomerList().add(Customer.setCustomer(result));
 
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
         final Node previous = (Node) event.getSource();
         final Stage stage = (Stage) previous.getScene().getWindow();
         stage.close();
@@ -143,6 +148,5 @@ public class AddCustomerController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 }
