@@ -50,26 +50,28 @@ public class AddCustomerController implements Initializable {
         stage.close();
     }
 
-    public void validateForm() {
+    public void validateForm() throws CustomException {
+        if (!postal.getText().matches("\\d+") ||
+                !phone.getText().matches("\\d+") ||
+                !name.getText().matches("[a-zA-Z]+") ||
+                !country.getText().matches("[a-zA-Z]+") ||
+                !city.getText().matches("[a-zA-Z]+") ||
+                !address.getText().matches("^[a-zA-Z0-9,.']+$") ||
+                !address2.getText().matches("^[a-zA-Z0-9,.']+$")) {
 
+            throw new CustomException("Invalid Fields");
+
+        }
     }
 
     @FXML
-    public void handleSave(ActionEvent event) throws Exception {
+    public void handleSave(ActionEvent event) throws SQLException {
         try {
-            if (id.getText().trim().isEmpty() ||
-                    name.getText().trim().isEmpty() ||
-                    address.getText().trim().isEmpty() ||
-                    country.getText().trim().isEmpty() ||
-                    city.getText().trim().isEmpty() ||
-                    postal.getText().trim().isEmpty() ||
-                    phone.getText().trim().isEmpty()) {
-                throw new Exception();
-                }
-            } catch (Exception e) {
+            validateForm();
+            } catch (CustomException e) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Error");
-                    alert.setHeaderText("Please make sure all entries are filled in and valid");
+                    alert.setHeaderText("Please make sure all entries are filled in and contain only valid values");
                     alert.show();
                     return;
             }
