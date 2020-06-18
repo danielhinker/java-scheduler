@@ -21,6 +21,4 @@ public class City {
     public String getCity() { return city; }
     public String getCountryId() { return countryId; }
 
-//    INSERT INTO city (city, countryId) VALUES ('LA', 1);
-
 }

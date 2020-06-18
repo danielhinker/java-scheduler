@@ -33,6 +33,4 @@ public class Address {
     public String getPostalCode() { return postalCode; }
     public String getPhone() { return phone; }
 
-    // INSERT INTO address (address, cityId, postalCode, phone) VALUES ('testAddress', 1, '90210', '2012012012')
-
 }

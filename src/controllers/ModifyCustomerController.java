@@ -14,13 +14,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
 public class ModifyCustomerController implements Initializable {
 
@@ -65,7 +59,6 @@ public class ModifyCustomerController implements Initializable {
             System.out.println(e);
         }
         id.setDisable(true);
-
     }
 
     @FXML private Button cancelButton;
@@ -94,7 +87,7 @@ public class ModifyCustomerController implements Initializable {
 
             // Insert Customer
             String insertQuery = "UPDATE customer SET customerName = '" + name.getText() + "', addressId = '"
-                    + docController.customerClicked.getAddressId() + "', active = '1', lastUpdate = '" + currentDateTime + "', createdBy = '"
+                    + docController.customerClicked.getAddressId() + "', active = '1', lastUpdate = '" + currentDateTime + "', lastUpdateBy = '"
                     + userName + "' WHERE customerId = '" + docController.customerClicked.getCustomerId() + "'";
             Boolean insertResults = statement.execute(insertQuery);
 
@@ -122,20 +115,17 @@ public class ModifyCustomerController implements Initializable {
             statement.execute(insertQuery);
 
             // Insert Country
-            String countryInsertQuery = "UPDATE country SET country = '" + country.getText() + "', createDate = '"
+            insertQuery = "UPDATE country SET country = '" + country.getText() + "', createDate = '"
                     + currentDateTime + "', lastUpdateBy = '" + userName + "'";
             statement.execute(insertQuery);
-
 
             // Select Customer
             String customerSelectQuery = "SELECT * FROM customer WHERE (customerId = '" + docController.customerClicked.getCustomerId() + "')";
             ResultSet CustomerResult = statement.executeQuery(customerSelectQuery);
             CustomerResult.next();
 
-
             // Set Customer
             docController.getCustomerList().set(docController.customerClickedIndex, Customer.setCustomer(CustomerResult));
-
 
         } catch (SQLException e) {
             System.out.println(e);

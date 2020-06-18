@@ -37,7 +37,4 @@ public class User {
     }
     public String getActive() { return active; }
 
-//    INSERT INTO user (userName, password, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES ("test", "test", 1, "2004-05-23T14:25:10", "me", "2004-05-23T14:25:10", "me");
-
-
 }

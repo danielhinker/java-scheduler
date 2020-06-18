@@ -20,12 +20,12 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ResourceBundle;
 
 public class ConsultantAppointmentsController implements Initializable {
 
     private MenuController docController;
-
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
     private ObservableList<String> consultantList = FXCollections.observableArrayList();
 
@@ -54,7 +54,7 @@ public class ConsultantAppointmentsController implements Initializable {
             while (results.next()) {
                 appointmentList.add(Appointment.setAppointment(results));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
 
@@ -100,14 +100,12 @@ public class ConsultantAppointmentsController implements Initializable {
         try {
             ResultSet results = statement.executeQuery(query);
             while (results.next()) {
-//                consultantList.add(results.getString("userName"));
                 appointmentList.add(Appointment.setAppointment(results));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
             System.out.println(throwables);
         }
-
     }
 
     public void handleClose() {

@@ -1,6 +1,6 @@
 package controllers;
 
-import com.mysql.cj.protocol.Resultset;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,14 +8,9 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 import models.*;
-
-import java.text.SimpleDateFormat;
-import java.time.*;
 import java.net.URL;
 import java.sql.*;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
 public class AddCustomerController implements Initializable {
 
@@ -59,20 +54,14 @@ public class AddCustomerController implements Initializable {
     public void handleSave(ActionEvent event) {
         try {
 
-            // Get Current Time
-//            final java.util.Date currentTime = new Date();
-//            final SimpleDateFormat formattedDate =
-//                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            formattedDate.setTimeZone(TimeZone.getTimeZone("GMT"));
             String currentDateTime = Utilities.getCurrentDateTime();
-
             String userName = docController.getUser().getUsername();
 
             // Insert Country
             Statement statement = Database.getStatement();
             String insertQuery = "INSERT IGNORE INTO country (country, createDate, createdBy) VALUES ('" + country.getText() + "', '"
             + currentDateTime + "', '" + userName + "')";
-            int insertResults = statement.executeUpdate(insertQuery);
+            statement.executeUpdate(insertQuery);
 
             // Select Country
             String searchQuery = "SELECT * FROM country WHERE (country = '" + country.getText() + "')";
@@ -88,7 +77,7 @@ public class AddCustomerController implements Initializable {
             insertQuery = "INSERT IGNORE INTO city (city, countryId, createDate, createdBy) VALUES ('" +
                     city.getText() + "', '" + country.getCountryId() + "', '"
                     + currentDateTime + "', '" + userName + "')";
-            insertResults = statement.executeUpdate(insertQuery);
+            statement.executeUpdate(insertQuery);
 
             // Select City
             searchQuery = "SELECT * FROM city WHERE (countryId = '" + country.getCountryId() + "')";
@@ -105,7 +94,7 @@ public class AddCustomerController implements Initializable {
                     + address.getText() + "', '" + address2.getText() + "', '" + city.getCityId() + "', '"
                     + postal.getText() + "', '" + phone.getText() + "', '"
                     + currentDateTime + "', '" + userName + "')";
-            insertResults = statement.executeUpdate(insertQuery);
+            statement.executeUpdate(insertQuery);
 
             // Select Address
             searchQuery = "SELECT * FROM address WHERE (address = '" + address.getText() + "')";
@@ -123,7 +112,7 @@ public class AddCustomerController implements Initializable {
             // Insert Customer
             insertQuery = "INSERT IGNORE INTO customer (customerName, addressId, active, createDate, createdBy) VALUES ('"
                     + name.getText() + "', '" + address.getAddressId() + "', '1', '" + currentDateTime + "', '" + userName + "' )";
-            insertResults = statement.executeUpdate(insertQuery);
+            statement.executeUpdate(insertQuery);
 
             // Select Customer
             searchQuery = "SELECT * FROM customer WHERE (customerName = '" + name.getText() + "')";

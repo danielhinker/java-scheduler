@@ -12,7 +12,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.Appointment;
-
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,9 +21,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.time.*;
 import javafx.scene.control.*;
 import models.Utilities;
 
@@ -53,7 +50,6 @@ public class ModifyAppointmentController implements Initializable {
             location.setText(result.getString(6));
             contact.setText(result.getString(7));
             type.setValue(result.getString(8));
-
             url.setText(result.getString(9));
 
             String dateTime = result.getString(10);
@@ -82,12 +78,9 @@ public class ModifyAppointmentController implements Initializable {
             try {
                 startDate = format.parse(dateTime);
                 endDate = format.parse(endDateTime);
-
                 long timeDifference = endDate.getTime() - startDate.getTime();
                 long diffMinutes = timeDifference / (60 * 1000) % 61;
-
                 differenceMinutes = (int) diffMinutes;
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -113,7 +106,6 @@ public class ModifyAppointmentController implements Initializable {
     @FXML private ComboBox start;
     @FXML private ComboBox end;
     @FXML private Button cancelButton;
-    @FXML private Button saveButton;
 
     private final ObservableList<String> startTimesList = FXCollections.observableArrayList("08:00 AM", "08:15 AM",
             "08:30 AM", "08:45 AM", "09:00 AM", "09:15 AM", "09:30 AM", "09:45 AM", "10:00 AM", "10:15 AM", "10:30 AM",
@@ -131,6 +123,8 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     public void handleSave(ActionEvent event) throws ParseException, SQLException {
+
+        // Sets Start Date and Time
         LocalDate dateOnly = date.getValue();
         String startTimeSelected = startTimesList.get(start.getSelectionModel().getSelectedIndex());
         DateFormat inputFormat = new SimpleDateFormat("hh:mm aa");
@@ -154,7 +148,6 @@ public class ModifyAppointmentController implements Initializable {
         }
         String newTime = df.format(cal.getTime());
         String endDateTime = dateOnly + " " + newTime;
-//            System.out.println(newTime);
         String currentDateTime = Utilities.getCurrentDateTime();
         String typeSelected = meetingTypes.get(type.getSelectionModel().getSelectedIndex());
 
@@ -174,8 +167,6 @@ public class ModifyAppointmentController implements Initializable {
             alert.show();
             return;
         } else {
-
-//            try {
                 Statement statement = Database.getStatement();
                 String insertQuery = "UPDATE appointment SET customerId = '" + customerId.getText() + "', userId = '" +
                         userId.getText() + "', title = '" + title.getText() + "', description = '" + description.getText()

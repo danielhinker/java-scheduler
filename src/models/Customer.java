@@ -58,6 +58,4 @@ public class Customer {
     public String getLastUpdate() { return lastUpdate; }
     public String getLastUpdateBy() { return lastUpdateBy; }
 
-    // INSERT INTO customer (customerName, addressId, active, ) VALUES ('name', 1, '1');
-
 }

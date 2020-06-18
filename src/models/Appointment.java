@@ -2,6 +2,10 @@ package models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class Appointment {
     private String appointmentId;
@@ -58,7 +62,7 @@ public class Appointment {
     public void setLastUpdate(String lastUpdate) { this.lastUpdate = lastUpdate; }
     public void setLastUpdateBy(String lastUpdateBy) { this.lastUpdateBy = lastUpdateBy; }
 
-    public static Appointment setAppointment(ResultSet result) throws SQLException {
+    public static Appointment setAppointment(ResultSet result) throws SQLException, ParseException {
         Appointment appointment = new Appointment();
         appointment.setAppointmentId(result.getString(1));
         appointment.setCustomerId(result.getString(2));
@@ -69,8 +73,30 @@ public class Appointment {
         appointment.setContact(result.getString(7));
         appointment.setType(result.getString(8));
         appointment.setUrl(result.getString(9));
-        appointment.setStart(result.getString(10));
-        appointment.setEnd(result.getString(11));
+
+
+        String startTime = result.getString(10);
+        String endTime = result.getString(11);
+
+//        String dateStr = "2020-06-17 10:30:00"; // replace with dateTime
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        Date date = df.parse(startTime);
+        df.setTimeZone(TimeZone.getDefault());
+        String formattedDate = df.format(date);
+        System.out.println(formattedDate);
+
+        SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df2.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date2 = df2.parse(endTime);
+        df2.setTimeZone(TimeZone.getDefault());
+        String formattedDate2 = df2.format(date2);
+        System.out.println(formattedDate2);
+
+        appointment.setStart(formattedDate);
+        appointment.setEnd(formattedDate2);
+
         appointment.setCreateDate(result.getString(12));
         appointment.setCreatedBy(result.getString(13));
         appointment.setLastUpdate(result.getString(14));
@@ -94,5 +120,4 @@ public class Appointment {
     public String getLastUpdate() { return lastUpdate; }
     public String getLastUpdateBy() { return lastUpdateBy; }
 
-    // INSERT INTO appointment (customerId, userId, title, description, location, contact, type, url, start, end) VALUES (2, 1, 'title', 'desc', 'In person', 'me', 'type', 'url', '2020-06-14T14:25:10', '2020-06-14T16:25:10');
 }

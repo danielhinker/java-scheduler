@@ -19,35 +19,14 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
-
-import java.io.File;  // Import the File class
-
+import java.io.File;
 
 public class LoginController implements Initializable {
 
     @FXML private TextField usernameField;
     @FXML private TextField passwordField;
-    @FXML private RadioButton english;
-    @FXML private RadioButton spanish;
-
-    public void handleEnglish() {
-        Locale english = new Locale("en", "US");
-        ResourceBundle resources = ResourceBundle.getBundle("language", english);
-        incorrectLogin.setTitle(resources.getString("title"));
-        incorrectLogin.setHeaderText(resources.getString("header"));
-    }
-
-    public void handleSpanish() {
-        Locale spanish = new Locale("es", "ES");
-        ResourceBundle resources = ResourceBundle.getBundle("language", spanish);
-        incorrectLogin.setTitle(resources.getString("title"));
-        incorrectLogin.setHeaderText(resources.getString("header"));
-    }
 
     private User user;
     public User getUser() {
@@ -58,9 +37,8 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        english.setSelected(true);
-        Locale english = new Locale("en", "US");
-        resources = ResourceBundle.getBundle("language", english);
+        Locale defaultLanguage = Locale.getDefault();
+        resources = ResourceBundle.getBundle("language", defaultLanguage);
         incorrectLogin.setTitle(resources.getString("title"));
         incorrectLogin.setHeaderText(resources.getString("header"));
 
@@ -68,7 +46,6 @@ public class LoginController implements Initializable {
 
     public void handleLogin(ActionEvent actionEvent) throws SQLException {
 
-//        try {
             Statement statement = Database.getStatement();
             System.out.println((statement));
             String query = "SELECT * FROM user WHERE userName='" + usernameField.getText() + "' AND password='" + passwordField.getText() + "'";
@@ -85,7 +62,6 @@ public class LoginController implements Initializable {
                             + "', Login Time: '" + Utilities.getCurrentDateTime() + "'\n");
                     myWriter.close();
                 } catch (IOException e) {
-                    System.out.println("An error occurred.");
                     e.printStackTrace();
                 }
 
@@ -98,10 +74,10 @@ public class LoginController implements Initializable {
                     loader.<MenuController>getController().setDocController(this);
                     stage.show();
 
+                    String currentTime = Utilities.getCurrentDateTime();
+
                     Statement statement2 = Database.getStatement();
                     String query2 = "SELECT * FROM appointment WHERE NOW() > start - INTERVAL 15 MINUTE AND NOW() < start";
-
-//                   START = 11:15am  NOW() = 17:55   now() - INTERVAL 15 min = 17:40
 
                     try {
                         ResultSet result2 = statement2.executeQuery(query2);
@@ -118,37 +94,11 @@ public class LoginController implements Initializable {
                 } catch (Exception e) {
                     System.out.println((e));
                 }
-//                return true;
-//                changeView();
+
             } else {
-
                 incorrectLogin.show();
-//                System.out.println("failed");
-//                Logger.log(username, false);
-//                return false;
             }
-//
-//
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
+
     }
-
-//        public static void changeView() {
-//        try {
-//        FXMLLoader loader = new FXMLLoader(LoginController.class.getResource("Menu.fxml"));
-//        Parent root1 = loader.load();
-//        Stage stage = new Stage();
-//        stage.setScene(new Scene(root1));
-////        loader.<MenuController>getController().setDocController(this);
-//        stage.show();
-//    } catch (Exception e) {
-//        System.out.println((e));
-//    }
-//    }
-
 
 }

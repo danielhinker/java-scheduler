@@ -15,10 +15,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
 public class AppointmentTypesController implements Initializable {
 
@@ -28,10 +25,7 @@ public class AppointmentTypesController implements Initializable {
         this.docController = docController;
     }
 
-    @FXML
-    private Button closeButton;
-    @FXML
-    private Button apply;
+    @FXML private Button closeButton;
 
     @FXML private Label inPerson;
     @FXML private Label phone;
@@ -44,14 +38,11 @@ public class AppointmentTypesController implements Initializable {
 
     public void handleApply(ActionEvent event) throws SQLException {
         String index = Integer.toString(month.getSelectionModel().getSelectedIndex() + 1);
-//        System.out.println(index);
-
 
         Statement statement = Database.getStatement();
         String videoQuery = "SELECT COUNT(*) AS total FROM appointment WHERE type = 'Video' and MONTH(start) = '" + index + "'";
         ResultSet videoResult = statement.executeQuery(videoQuery);
         videoResult.next();
-
         video.setText(videoResult.getString("total"));
 
         String inPersonQuery = "SELECT COUNT(*) AS total FROM appointment WHERE type = 'In Person' and MONTH(start) = '" + index + "'";
@@ -60,12 +51,8 @@ public class AppointmentTypesController implements Initializable {
         inPerson.setText(inPersonResult.getString("total"));
 
         String phoneQuery = "SELECT COUNT(*) AS total FROM appointment WHERE type = 'Phone' and MONTH(start) = '" + index + "'";
-
         ResultSet phoneResult = statement.executeQuery(phoneQuery);
-
         phoneResult.next();
-
-
         phone.setText(phoneResult.getString("total"));
     }
 

@@ -22,11 +22,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.ResourceBundle;
-import java.util.TimeZone;
+import java.util.*;
 
 public class AddAppointmentController implements Initializable {
 
@@ -63,14 +59,12 @@ public class AddAppointmentController implements Initializable {
     @FXML private TextField description;
     @FXML private TextField location;
     @FXML private TextField contact;
-//    @FXML private TextField type;
     @FXML private TextField url;
     @FXML private DatePicker date;
     @FXML private ComboBox start;
     @FXML private ComboBox end;
     @FXML private ComboBox type;
     @FXML private Button cancelButton;
-    @FXML private Button saveButton;
 
     private ObservableList<String> startTimesList = FXCollections.observableArrayList("08:00 AM", "08:15 AM",
             "08:30 AM", "08:45 AM", "09:00 AM", "09:15 AM", "09:30 AM", "09:45 AM", "10:00 AM", "10:15 AM", "10:30 AM",
@@ -86,41 +80,33 @@ public class AddAppointmentController implements Initializable {
         stage.close();
     }
 
-    public void checkAppointment(String dateTime) {
-        try {
-            ObservableList<Appointment> appointmentTimesList = FXCollections.observableArrayList();
-
-            Statement statement = Database.getStatement();
-            String insertQuery = "SELECT * from appointment";
-            ResultSet selectResult = statement.executeQuery(insertQuery);
-            while (selectResult.next()) {
-                Appointment appointment = new Appointment();
-                appointment.setStart(selectResult.getString(10));
-                appointment.setEnd(selectResult.getString(11));
-                appointmentTimesList.add(appointment);
-            }
-
-//            String startTime = selectResult.getString(10);
-//            String endTime = selectResult.getString(11);
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-    }
-
     public void handleSave(ActionEvent event) throws ParseException, SQLException {
 
 
+//   sets appt time as localtime
         LocalDate dateOnly = date.getValue();
         String startTimeSelected = startTimesList.get(start.getSelectionModel().getSelectedIndex());
         DateFormat inputFormat = new SimpleDateFormat("hh:mm aa");
         DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
         String timeOnly = outputFormat.format(inputFormat.parse(startTimeSelected));
+
         String dateTime = dateOnly + " " + timeOnly;
 
-        // Sets End Time
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-        Date d = df.parse(timeOnly);
+        System.out.println(dateTime);
+
+        // Converts appt time to UTC
+        String dateStr = "2020-06-17 10:30:00"; // replace with dateTime
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getDefault());
+        Date date = df.parse(dateTime);
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String formattedDate = df.format(date);
+        System.out.println(formattedDate);
+
+//
+        // Sets End Time as localtime
+        SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
+        Date d = df2.parse(timeOnly);
         Calendar cal = Calendar.getInstance();
         cal.setTime(d);
         if (end.getSelectionModel().getSelectedIndex() == 0) {
@@ -132,21 +118,28 @@ public class AddAppointmentController implements Initializable {
         } else {
             cal.add(Calendar.MINUTE, 60);
         }
-        String newTime = df.format(cal.getTime());
+        String newTime = df2.format(cal.getTime());
         String endDateTime = dateOnly + " " + newTime;
+
+        // Sets endtime to UTC
+        SimpleDateFormat df3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df3.setTimeZone(TimeZone.getDefault());
+        Date date3 = df3.parse(endDateTime);
+        df3.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String formattedDate3 = df3.format(date3);
+        System.out.println(formattedDate3);
+
 
         String currentDateTime = Utilities.getCurrentDateTime();
         String typeSelected = meetingTypes.get(type.getSelectionModel().getSelectedIndex());
 
 
-        // Check for overlapping appointments
+//        // Check for overlapping appointments
             Statement statementQuery = Database.getStatement();
-            String selectQuery2 = "SELECT * FROM appointment WHERE (start > '" + dateTime + "' AND start < '" + endDateTime + "')" +
-                    " OR (end > '" + dateTime + "' AND end < '" + endDateTime + "')";
+            String selectQuery2 = "SELECT * FROM appointment WHERE (start >= '" + formattedDate + "' AND start < '" + formattedDate3 + "')" +
+                    " OR (end > '" + formattedDate + "' AND end <= '" + formattedDate3 + "')";
             ResultSet selectResult2 = statementQuery.executeQuery(selectQuery2);
-            Connection connection = Database.getConnection();
-
-
+//
         if (selectResult2.next()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
@@ -160,9 +153,9 @@ public class AddAppointmentController implements Initializable {
             String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
                     "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
                     title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
-                    typeSelected + "', '" + url.getText() + "', '" + dateTime + "', '" + endDateTime + "', '" +
+                    typeSelected + "', '" + url.getText() + "', '" + formattedDate + "', '" + formattedDate3 + "', '" +
                     currentDateTime + "', '" + docController.getUser().getUsername() + "')";
-            Boolean insertResult = statement.execute(insertQuery);
+            statement.execute(insertQuery);
 
 
             // Select Appointment

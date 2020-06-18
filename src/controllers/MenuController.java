@@ -24,6 +24,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -58,7 +59,6 @@ public class MenuController implements Initializable {
     void setDocController(LoginController docController) {
         this.docController = docController;
         this.user = docController.getUser();
-
     }
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -94,7 +94,7 @@ public class MenuController implements Initializable {
             while (results.next()) {
                 appointmentList.add(Appointment.setAppointment(results));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
 
@@ -106,13 +106,14 @@ public class MenuController implements Initializable {
         customerLastUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
         customerLastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("lastUpdateBy"));
         customerTable.setItems(customerList);
+
+        // Lambda expression is used in order to set variables when the Customer Table is clicked
         customerTable.setOnMouseClicked((EventHandler<Event>) e -> {
             appointmentClicked = null;
             appointmentClickedIndex = 0;
             customerClicked = customerTable.getSelectionModel().getSelectedItem();
             customerClickedIndex = customerTable.getSelectionModel().getSelectedIndex();
         });
-
 
         appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         appointmentCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -124,13 +125,14 @@ public class MenuController implements Initializable {
         appointmentType.setCellValueFactory(new PropertyValueFactory<>("type"));
         appointmentStart.setCellValueFactory(new PropertyValueFactory<>("start"));
         appointmentEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
-
         appointmentTable.setItems(appointmentList);
+
+        // Lambda expression is used in order to set variables when the Appointment Table is clicked
         appointmentTable.setOnMouseClicked((EventHandler<Event>) e -> {
-            customerClicked = null;
-            customerClickedIndex = 0;
-            appointmentClicked = appointmentTable.getSelectionModel().getSelectedItem();
-            appointmentClickedIndex = appointmentTable.getSelectionModel().getSelectedIndex();
+                customerClicked = null;
+                customerClickedIndex = 0;
+                appointmentClicked = appointmentTable.getSelectionModel().getSelectedItem();
+                appointmentClickedIndex = appointmentTable.getSelectionModel().getSelectedIndex();
         });
 
     }
@@ -143,7 +145,6 @@ public class MenuController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
-
         } catch (Exception e) {
             System.out.println((e));
         }
@@ -171,7 +172,6 @@ public class MenuController implements Initializable {
             stage.setScene(new Scene(root));
             loader.<ModifyCustomerController>getController().setDocController(this);
             stage.show();
-
         } catch (Exception e) {
             System.out.println((e));
         }
@@ -186,44 +186,26 @@ public class MenuController implements Initializable {
             if (alertButton.get() == ButtonType.OK) {
                 try {
                     Statement statement = Database.getStatement();
-//                    String appointmentSelectQuery = "SELECT * FROM appointment WHERE customerId = '" + customerClicked.getCustomerId() + "'";
                     String appointmentDeleteQuery = "DELETE FROM appointment WHERE customerId = '" + customerClicked.getCustomerId() + "'";
                     String customerQuery = "DELETE FROM customer WHERE customerId = '" + customerClicked.getCustomerId() + "'";
 
-//                    ResultSet selectResult = statement.executeQuery(appointmentSelectQuery);
-////                    ObservableList<String> appointmentsToDelete = FXCollections.observableArrayList();
-//                    while (selectResult.next()) {
-////                        appointmentsToDelete.add(selectResult.getString(1));
-//                        for (int i = 0; i < appointmentList.size(); i++) {
-//                            if (appointmentList.get(i).getAppointmentId() == selectResult.getString(1)) {
-//                                appointmentList.remove(i);
-//                            }
-//                        }
-//                    }
 
-                    int appointmentResult = statement.executeUpdate(appointmentDeleteQuery);
-                    int customerResult = statement.executeUpdate(customerQuery);
+                    statement.executeUpdate(appointmentDeleteQuery);
+                    statement.executeUpdate(customerQuery);
                     appointmentList.clear();
-//                    appointmentList = FXCollections.observableArrayList() ;
                     String query = "SELECT * FROM appointment";
                     try {
                         ResultSet results = statement.executeQuery(query);
-
                         while (results.next()) {
-
-
                             appointmentList.add(Appointment.setAppointment(results));
-
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
 
-
                     customerList.remove(customerClicked);
-
-
-
 
                 } catch (SQLException e) {
                     System.out.println(e);

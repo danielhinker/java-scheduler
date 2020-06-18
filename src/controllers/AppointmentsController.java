@@ -17,6 +17,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -30,10 +31,8 @@ public class AppointmentsController implements Initializable {
         this.docController = docController;
     }
 
-    @FXML
-    private Button closeButton;
-    @FXML
-    TableView<Appointment> appointmentTable;
+    @FXML private Button closeButton;
+    @FXML TableView<Appointment> appointmentTable;
     @FXML private TableColumn<Appointment, String> appointmentId;
     @FXML private TableColumn<Appointment, String> customerId;
     @FXML private TableColumn<Appointment, String> userId;
@@ -45,8 +44,6 @@ public class AppointmentsController implements Initializable {
     @FXML private TableColumn<Appointment, String> start;
     @FXML private TableColumn<Appointment, String> end;
     @FXML private RadioButton all;
-    @FXML private RadioButton weekly;
-    @FXML private RadioButton monthly;
     @FXML private Label count;
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -67,14 +64,13 @@ public class AppointmentsController implements Initializable {
             while (results.next()) {
                 appointmentList.add(Appointment.setAppointment(results));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
         count.setText(Integer.toString(appointmentList.size()));
     }
 
     public String getCurrentMonth() {
-        // Get Current Time
         final java.util.Date currentTime = new Date();
         final SimpleDateFormat formattedDate =
                 new SimpleDateFormat("MM");
@@ -93,7 +89,7 @@ public class AppointmentsController implements Initializable {
             while (results.next()) {
                 appointmentList.add(Appointment.setAppointment(results));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
         count.setText(Integer.toString(appointmentList.size()));
@@ -110,7 +106,7 @@ public class AppointmentsController implements Initializable {
             while (results.next()) {
                 appointmentList.add(Appointment.setAppointment(results));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
         count.setText(Integer.toString(appointmentList.size()));
