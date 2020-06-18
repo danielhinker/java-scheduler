@@ -53,6 +53,17 @@ public class AddCustomerController implements Initializable {
     @FXML
     public void handleSave(ActionEvent event) {
         try {
+            if (id.getText() == null || id.getText().trim().isEmpty() || name.getText() == null ||
+                    name.getText().trim().isEmpty() || address.getText() == null || address.getText().trim().isEmpty() ||
+                    country.getText() == null || city.getText().trim().isEmpty() || city == null ||
+                    city.getText().trim().isEmpty() || postal.getText() == null || postal.getText().trim().isEmpty() ||
+                    phone.getText() == null || phone.getText().trim().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error");
+                alert.setHeaderText("Please make sure all entries are filled in and valid");
+                alert.show();
+                return;
+            }
 
             String currentDateTime = Utilities.getCurrentDateTime();
             String userName = docController.getUser().getUsername();

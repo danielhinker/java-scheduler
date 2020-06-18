@@ -12,8 +12,8 @@ import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import models.Appointment;
 import models.Utilities;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 
-import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,8 +80,19 @@ public class AddAppointmentController implements Initializable {
         stage.close();
     }
 
-    public void handleSave(ActionEvent event) throws ParseException, SQLException {
+    public void validateDate(String dateTime) throws Exception {
+        SimpleDateFormat date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d2 = date2.parse(dateTime);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(d2);
+        int dayOfWeek = cal2.get(Calendar.DAY_OF_WEEK);
+        if (dayOfWeek == 1 || dayOfWeek == 7) {
+            throw new Exception();
+        }
+        System.out.println(dayOfWeek);
+    }
 
+    public void handleSave(ActionEvent event) throws ParseException, SQLException {
 
 //   sets appt time as localtime
         LocalDate dateOnly = date.getValue();
@@ -90,20 +101,31 @@ public class AddAppointmentController implements Initializable {
         DateFormat outputFormat = new SimpleDateFormat("HH:mm:ss");
         String timeOnly = outputFormat.format(inputFormat.parse(startTimeSelected));
 
-        String dateTime = dateOnly + " " + timeOnly;
+        String startDateTime = dateOnly + " " + timeOnly;
 
-        System.out.println(dateTime);
+        try {
+            validateDate(startDateTime);
+        } catch (Exception e) {
+            System.out.println(e);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Appointment time and day is outside of business hours.");
+            alert.show();
+            return;
+        }
+        System.out.println(startDateTime);
 
-        // Converts appt time to UTC
-        String dateStr = "2020-06-17 10:30:00"; // replace with dateTime
+
+
+//         Converts appt time to UTC
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         df.setTimeZone(TimeZone.getDefault());
-        Date date = df.parse(dateTime);
+        Date date = df.parse(startDateTime);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String formattedDate = df.format(date);
-        System.out.println(formattedDate);
+        String startDateTimeUTC = df.format(date);
+        System.out.println(startDateTimeUTC);
 
-//
+
         // Sets End Time as localtime
         SimpleDateFormat df2 = new SimpleDateFormat("HH:mm:ss");
         Date d = df2.parse(timeOnly);
@@ -118,10 +140,12 @@ public class AddAppointmentController implements Initializable {
         } else {
             cal.add(Calendar.MINUTE, 60);
         }
+
+
         String newTime = df2.format(cal.getTime());
         String endDateTime = dateOnly + " " + newTime;
-
-        // Sets endtime to UTC
+//
+//        // Sets endtime to UTC
         SimpleDateFormat df3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         df3.setTimeZone(TimeZone.getDefault());
         Date date3 = df3.parse(endDateTime);
@@ -136,8 +160,8 @@ public class AddAppointmentController implements Initializable {
 
 //        // Check for overlapping appointments
             Statement statementQuery = Database.getStatement();
-            String selectQuery2 = "SELECT * FROM appointment WHERE (start >= '" + formattedDate + "' AND start < '" + formattedDate3 + "')" +
-                    " OR (end > '" + formattedDate + "' AND end <= '" + formattedDate3 + "')";
+            String selectQuery2 = "SELECT * FROM appointment WHERE (start >= '" + startDateTimeUTC + "' AND start < '" + formattedDate3 + "')" +
+                    " OR (end > '" + startDateTimeUTC + "' AND end <= '" + formattedDate3 + "')";
             ResultSet selectResult2 = statementQuery.executeQuery(selectQuery2);
 //
         if (selectResult2.next()) {
@@ -153,7 +177,7 @@ public class AddAppointmentController implements Initializable {
             String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
                     "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
                     title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
-                    typeSelected + "', '" + url.getText() + "', '" + formattedDate + "', '" + formattedDate3 + "', '" +
+                    typeSelected + "', '" + url.getText() + "', '" + startDateTimeUTC + "', '" + formattedDate3 + "', '" +
                     currentDateTime + "', '" + docController.getUser().getUsername() + "')";
             statement.execute(insertQuery);
 
