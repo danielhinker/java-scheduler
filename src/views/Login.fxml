@@ -8,20 +8,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <children>
-      <Text layoutX="236.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduler">
+      <Text fx:id="title" layoutX="236.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduler">
          <font>
             <Font size="30.0" />
          </font>
       </Text>
       <TextField fx:id="usernameField" layoutX="317.0" layoutY="133.0" />
       <TextField fx:id="passwordField" layoutX="317.0" layoutY="202.0" />
-      <Button id="loginButton" layoutX="247.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="27.0" prefWidth="107.0" text="Login" />
-      <Text id="usernameText" layoutX="138.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+      <Button id="loginButton" fx:id="loginButton" layoutX="247.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="27.0" prefWidth="107.0" text="Login" />
+      <Text id="usernameText" fx:id="usernameText" layoutX="120.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
          <font>
             <Font size="23.0" />
          </font>
       </Text>
-      <Text id="passwordText" layoutX="138.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+      <Text id="passwordText" fx:id="passwordText" layoutX="122.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
          <font>
             <Font size="23.0" />
          </font>

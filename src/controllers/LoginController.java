@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.User;
 import models.Utilities;
@@ -27,6 +28,10 @@ public class LoginController implements Initializable {
 
     @FXML private TextField usernameField;
     @FXML private TextField passwordField;
+    @FXML private Button loginButton;
+    @FXML private Text title;
+    @FXML private Text passwordText;
+    @FXML private Text usernameText;
 
     private User user;
     public User getUser() {
@@ -39,8 +44,12 @@ public class LoginController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Locale defaultLanguage = Locale.getDefault();
         resources = ResourceBundle.getBundle("language", defaultLanguage);
-        incorrectLogin.setTitle(resources.getString("title"));
+        incorrectLogin.setTitle(resources.getString("errorTitle"));
         incorrectLogin.setHeaderText(resources.getString("header"));
+        loginButton.setText(resources.getString("loginButton"));
+        title.setText(resources.getString("title"));
+        passwordText.setText(resources.getString("passwordText"));
+        usernameText.setText(resources.getString("usernameText"));
 
     }
 
