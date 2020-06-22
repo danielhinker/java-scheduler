@@ -105,15 +105,13 @@ public class AddAppointmentController implements Initializable {
         try {
             validateDate(startDateTime);
         } catch (Exception e) {
-//            System.out.println(e);
+            System.out.println(e);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText("Appointment time and day is outside of business hours.");
             alert.show();
             return;
         }
-//        System.out.println(startDateTime);
-
 
 //         Converts appt time to UTC
         SimpleDateFormat startDateTimeFormatUTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -121,8 +119,6 @@ public class AddAppointmentController implements Initializable {
         Date date = startDateTimeFormatUTC.parse(startDateTime);
         startDateTimeFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
         String startDateTimeUTC = startDateTimeFormatUTC.format(date);
-//        System.out.println(startDateTimeUTC);
-
 
         // Sets End Time as localtime
         SimpleDateFormat endTimeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -161,41 +157,37 @@ public class AddAppointmentController implements Initializable {
             String selectQuery2 = "SELECT * FROM appointment WHERE ('" + startDateTimeUTC + "' >= start AND '" + endDateTimeUTC + "' <= end) OR" +
                     "('" + startDateTimeUTC + "' <= start AND '" + endDateTimeUTC + "' > start AND '" + endDateTimeUTC + "' < end) OR" +
                     "('" + startDateTimeUTC + "' > start AND '" + endDateTimeUTC + "' >= end AND '" + startDateTimeUTC + "' < end)";
-//        String selectQuery2 = "SELECT * FROM appointment WHERE (start <= '" + startDateTimeUTC + "' AND end >= '" + endDateTimeUTC + "')" +
-//                "OR (start >= '" + startDateTimeUTC + "' AND end <= '" + endDateTimeUTC + "')" +
-//                "OR (start >= '" + startDateTimeUTC + "' AND end <= '" + endDateTimeUTC + "')";
             ResultSet selectResult2 = statementQuery.executeQuery(selectQuery2);
-//
-        System.out.println(selectResult2.next());
-//        if (selectResult2.next()) {
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle("Error");
-//            alert.setHeaderText("Overlapping appointment times.");
-//            alert.show();
-//            return;
-//        } else {
-//
-//
-//            Statement statement = Database.getStatement();
-//            String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
-//                    "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
-//                    title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
-//                    typeSelected + "', '" + url.getText() + "', '" + startDateTimeUTC + "', '" + endDateTimeUTC + "', '" +
-//                    currentDateTime + "', '" + docController.getUser().getUsername() + "')";
-//            statement.execute(insertQuery);
-//
-//
-//            // Select Appointment
-//            String selectQuery = "SELECT * FROM appointment WHERE appointmentId = '" + appointmentId.getText() + "'";
-//            ResultSet result = statement.executeQuery(selectQuery);
-//            result.next();
-//            Appointment appointment = Appointment.setAppointment(result);
-//            docController.getAppointmentList().add(appointment);
-//
-//            final Node previous = (Node) event.getSource();
-//            final Stage stage = (Stage) previous.getScene().getWindow();
-//            stage.close();
-//        }
+
+
+        if (selectResult2.next()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Overlapping appointment times.");
+            alert.show();
+        } else {
+
+
+            Statement statement = Database.getStatement();
+            String insertQuery = "INSERT IGNORE INTO appointment (customerId, userId, title, description, location," +
+                    "contact, type, url, start, end, createDate, createdBy) VALUES ('" + customerId.getText() + "', '" + userId.getText() + "', '" +
+                    title.getText() + "', '" + description.getText() + "', '" + location.getText() + "', '" + contact.getText() + "', '" +
+                    typeSelected + "', '" + url.getText() + "', '" + startDateTimeUTC + "', '" + endDateTimeUTC + "', '" +
+                    currentDateTime + "', '" + docController.getUser().getUsername() + "')";
+            statement.execute(insertQuery);
+
+
+            // Select Appointment
+            String selectQuery = "SELECT * FROM appointment WHERE appointmentId = '" + appointmentId.getText() + "'";
+            ResultSet result = statement.executeQuery(selectQuery);
+            result.next();
+            Appointment appointment = Appointment.setAppointment(result);
+            docController.getAppointmentList().add(appointment);
+
+            final Node previous = (Node) event.getSource();
+            final Stage stage = (Stage) previous.getScene().getWindow();
+            stage.close();
+        }
     }
 
     @Override
