@@ -86,7 +86,7 @@ public class LoginController implements Initializable {
                     String currentTime = Utilities.getCurrentDateTime();
 
                     Statement statement2 = Database.getStatement();
-                    String query2 = "SELECT * FROM appointment WHERE NOW() > start - INTERVAL 15 MINUTE AND NOW() < start";
+                    String query2 = "SELECT * FROM appointment WHERE '" + currentTime + "' >= start - INTERVAL 15 MINUTE AND '" + currentTime + "' <= start";
 
                     try {
                         ResultSet result2 = statement2.executeQuery(query2);

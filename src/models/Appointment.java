@@ -85,14 +85,14 @@ public class Appointment {
         Date date = df.parse(startTime);
         df.setTimeZone(TimeZone.getDefault());
         String formattedDate = df.format(date);
-        System.out.println(formattedDate);
+//        System.out.println(formattedDate);
 
         SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         df2.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date2 = df2.parse(endTime);
         df2.setTimeZone(TimeZone.getDefault());
         String formattedDate2 = df2.format(date2);
-        System.out.println(formattedDate2);
+//        System.out.println(formattedDate2);
 
         appointment.setStart(formattedDate);
         appointment.setEnd(formattedDate2);
